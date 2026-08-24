@@ -1,0 +1,5 @@
+Flask==3.0.2          # 백엔드 웹 프레임워크 (Jinja2 포함)
+PyJWT==2.8.0          # JWT (Access / Refresh Token) 생성 및 검증
+pymongo==4.6.1        # MongoDB 드라이버
+python-dotenv==1.0.1  # .env 파일 환경변수 로드 (SECRET_KEY, MONGO_URI 관리)
+gunicorn==21.2.0      # AWS EC2 배포용 WSGI 서버
