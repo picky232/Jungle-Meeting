@@ -127,7 +127,7 @@
         <div class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
             <div class="card-image">
                 <figure class="image">
-                    <img class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지">
+                    <img class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
                 </figure>
             </div>
             <div class="card-content">
@@ -135,11 +135,11 @@
                     <div class="media-content">
                         <input type="file" id="img-input" name="profile" accept="image/*">
                         <hr class="profile-line"> <br>
-                        <div class="profile-user-info-text has-text-centered">{{name}}</div>
+                        <div class="profile-user-info-text has-text-centered" style="">{{name}}</div>
                         <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
                         <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
                         <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
-                        <div class="button profile-info-fix-btn" onclick="deleteAccount()">회원탈퇴</div>
+                        <div class="button profile-info-fix-btn" onclick="deleteAccount()" style="background-color: #AEE996;">회원탈퇴</div>
                     </div>
                 </div>
             </div>
@@ -166,13 +166,13 @@
             <div class="card profile-tag-list">
                 <div>
                     <div class="columns is-multiline" id="tags">
-                        <button class="button custom-button" onclick="onClickAddTagBtn()">+</button>
+                        <button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>
                     </div>
                 </div>
             </div>
 
-        <button class="button custom-button-2" onclick="save()">저장</button>
-        <button class="button custom-button-2" onclick="backspace()">취소</button>
+        <button class="button custom-button-2" onclick="save()" style="background-color: #4DA359;">저장</button>
+        <button class="button custom-button-2" onclick="backspace()" style="background-color: #da0000;">취소</button>
         </div>
     </div>
 
