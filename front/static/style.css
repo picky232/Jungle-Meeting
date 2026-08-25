@@ -100,7 +100,7 @@ header {
 .pr-arrow>div:hover{
     background-color: #e5e3e3;
 }
-.rotate-180{
+.rotate-180{ /* 왜안되노 */
     transform: rotate(180deg);
 }
 .infomenu{
@@ -159,7 +159,7 @@ header {
 }
 
 .explain {
-    background-color: gray;
+    background-color: #AEE996;
     margin-top: 20px;
     height: 300px;
     width: 800px;
@@ -171,7 +171,7 @@ header {
     width: 800px;
     min-height: 500px;
     border-radius: 20px;
-    background-color: wheat;
+    background-color: #4DA359;
     padding: 20px;
 }
 
@@ -185,8 +185,10 @@ header {
 }
 
 .tag{
+    background-color: #AEE996;
     min-width: 50px;
     margin: 3px 3px;
+    font-weight: bold;
 }
 
 .card-boxes {
