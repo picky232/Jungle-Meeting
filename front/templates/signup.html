@@ -80,6 +80,8 @@
         }
 
 </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -153,44 +155,48 @@
     </div>
 
     <script>
-        document.getElementById("signupBtn").addEventListener("click", function(event) {
-        const userId        = document.getElementById("userId").value.trim();
-        const userName      = document.getElementById("userName").value.trim();
-        const sel1          = document.getElementById("sel1").value;
-        const sel2          = document.getElementById("sel2").value;
-        const userNumber    = document.getElementById("userNumber").value.trim();
-        const userPw        = document.getElementById("userPw").value.trim();
-        const userPwCheck   = document.getElementById("userPwCheck").value.trim();
+        $(document).ready(function() {
+            $("#signupBtn").on("click", function(event) {
+                const userId      = $.trim($("#userId").val());
+                const userName    = $.trim($("#userName").val());
+                const sel1        = $("#sel1").val();
+                const sel2        = $("#sel2").val();
+                const userNumber  = $.trim($("#userNumber").val());
+                const userPw      = $.trim($("#userPw").val());
+                const userPwCheck = $.trim($("#userPwCheck").val());
 
-        if (userId === "") {
-            alert("ID를 입력해주세요.");
-            event.preventDefault();
-        } else if (userName === "") {
-            alert("이름을 입력해주세요.");
-            event.preventDefault();
-        } else if (sel1 === "") {
-            alert("정글랩을 선택해주세요.");
-            event.preventDefault();
-        } else if (sel2 === "") {
-            alert("기수를 선택해주세요.");
-            event.preventDefault();
-        } else if (userNumber === "") {
-            alert("번호를 입력해주세요.");
-            event.preventDefault();
-        } else if (userPw === "") {
-            alert("PW를 입력해주세요.");
-            event.preventDefault();
-        } else if (userPwCheck === "") {
-            alert("재입력 PW를 입력해주세요.");
-            event.preventDefault();
-        } else if (userPw !== userPwCheck) {
-            alert("재확인용 비밀번호가 일치하지 않습니다.");
-            event.preventDefault();
-        } else {
-            alert("회원가입이 완료되었습니다.");
-            location.href = "/login"; // 로그인 페이지로 이동
-        }
+                if (userId === "") {
+                alert("ID를 입력해주세요.");
+                event.preventDefault();
+                } else if (userName === "") {
+                alert("이름을 입력해주세요.");
+                event.preventDefault();
+                } else if (sel1 === "") {
+                alert("정글랩을 선택해주세요.");
+                event.preventDefault();
+                } else if (sel2 === "") {
+                alert("기수를 선택해주세요.");
+                event.preventDefault();
+                } else if (userNumber === "") {
+                alert("번호를 입력해주세요.");
+                event.preventDefault();
+                } else if (userPw === "") {
+                alert("PW를 입력해주세요.");
+                event.preventDefault();
+                } else if (userPwCheck === "") {
+                alert("재입력 PW를 입력해주세요.");
+                event.preventDefault();
+                } else if (userPw !== userPwCheck) {
+                alert("재확인용 비밀번호가 일치하지 않습니다.");
+                event.preventDefault();
+                } else {
+                alert("회원가입이 완료되었습니다.");
+                location.href = "/login"; // 로그인 페이지로 이동
+                }
+            });
         });
+</script>
+
     </script>
 
 </body>
