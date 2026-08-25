@@ -1,0 +1,268 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+header {
+    height: 70px;
+    display: grid;
+    grid-template-columns: 1fr auto minmax(200px, 1fr); /*최소 200px 크기까지는 못오게 설정 */
+    align-items: center;
+    height: 70px;
+    padding: 0 50px;
+}
+
+.logo {
+    margin-top: 10px;
+    width: 100%;
+    grid-column: 2;
+    text-align: center;
+    white-space: nowrap; /*  */
+}
+
+.word {
+    -webkit-text-stroke: 3px #3a3a3a;
+    paint-order: stroke fill;
+    font-weight: 800;
+    font-size: 64px;
+}
+
+.jungle {
+    color: green;
+    font-weight: bold;
+    font-size: 35px;
+    text-align: center;
+}
+
+.meeting {
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 35px;
+    text-align: center;
+}
+
+/* 로그인 회원가입 버튼 */
+.sign_btn {
+    grid-column: 3;
+    justify-self: end;
+    white-space: nowrap;
+}
+
+.sign_btn>button {
+    width: 70px;
+    height: 30px;
+    font-size: 13px;
+    background-color: rgb(154, 241, 130);
+}
+
+/* 로그인 후 회원사진 + 이름 + 드롭다운메뉴 */
+.userInfo{
+    grid-column: 3;
+    justify-self: end;
+    white-space: nowrap;
+    width: 200px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+.pr-photo{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.pr-photo>img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.pr-name{
+    padding-left: 10px;
+    color: black;
+    min-width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+}
+.pr-arrow{
+    display: flex;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    line-height: 25px;
+    font-size: 30px;
+    margin-left: 5px;
+}
+.pr-arrow>div:hover{
+    background-color: #e5e3e3;
+}
+.rotate-180{
+    transform: rotate(180deg);
+}
+.infomenu{
+    display: none;
+    background-color: white;
+    margin-top: 150px;
+    width: 200px;
+    height: 100px;
+    border-radius: 15px;
+    z-index: 9;
+    position: absolute;
+    right: 50px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+.infomenu.open{
+    display: flex;
+}
+.infomenu>input{
+    padding: 0;
+    width: 160px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+.infomenu>#rewriteInfobtn:hover{
+    background-color: #8ce469;
+}
+.infomenu>#logoutbtn:hover{
+    background-color: rgb(250, 36, 36);
+}
+.infomenu>input:first-child{
+    margin-bottom: 10px;
+}
+#rewriteInfobtn{
+    background-color: #AEE996;
+    font-weight: bold;
+}
+#logoutbtn{
+    background-color: rgb(248, 72, 72);
+    color: white;
+    font-weight: bold;
+}
+
+.contents {
+    /* background-color: green; */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.explain {
+    background-color: gray;
+    margin-top: 20px;
+    height: 300px;
+    width: 800px;
+    border-radius: 20px;
+}
+
+.main-box {
+    margin-top: 15px;
+    width: 800px;
+    min-height: 500px;
+    border-radius: 20px;
+    background-color: wheat;
+    padding: 20px;
+}
+
+.tag-box {
+    padding: 0;
+    display: flex;
+    width: 760px;
+    min-height: 30px;
+    /* background-color: gray; */
+    flex-wrap: wrap; /* 한줄로 가득차면 다음줄로 한줄로 밀리는것 방지 */
+}
+
+.tag{
+    min-width: 50px;
+    margin: 3px 3px;
+}
+
+.card-boxes {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 350px);
+    justify-content: start;
+    column-gap: 30px;
+    row-gap: 30px;
+}
+
+/* 카드 스타일 */
+
+.jungle-card {
+    display: flex;
+    width: 350px;
+    height: 200px;
+    background-color: #ffffff;
+    border: 1px solid #eee;
+    /* 흰 배경끼리 경계 구분용 */
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.jungle-card:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.cd-profile-photo {
+    /* background-color: red; */
+    width: 160px;
+    /* height: 100px; */
+    padding: 15px;
+}
+
+.cd-profile-photo>img {
+    /* border: 1px solid #000; */
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.cd-comments {
+    width: 190px;
+    padding-left: 5px;
+}
+
+.cd-name {
+    margin-top: 18px;
+}
+
+.cd-name {
+    font-size: 1.2em;
+    font-weight: 800;
+}
+
+.lab-type {
+    line-height: 40px;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 1.1em;
+    color: var(--text-sub);
+}
+
+.yearNum {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-sub);
+    line-height: 30px;
+}
+
+.personal-tag {
+    background-color: red;
+    width: 160px;
+    height: 30px;
+    margin-top: 7px;
+}
+
+/* contents박스 태그 */
