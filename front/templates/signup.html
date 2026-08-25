@@ -1,0 +1,99 @@
+<!--
+    <2> 회원가입 페이지 (바탕은 1과 동일)
+        1.  제목 (css)
+        2.  ID (중복확인 버튼) (아이디가 중복시 경고)
+        3.  이름 
+        4.  정글랩 (드롭다운)
+        5.  기수 (드롭다운)
+        6.  번호 
+        7.  PW (안보이게) 
+        8.  PW 확인 (안보이게) (2-7과 동일하게) (2-7과 일치하지 않으면 경고)
+        9.  회원등록 (2-2 부터 2-8 까지 중 하나라도 비어있을시 경고) (동시에 로그인 가능) 
+
+ -->
+
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Jungle Meeting | signup </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="signup.css">
+
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <div class="signup">            
+        
+        <!-- 2.  ID (중복확인 버튼)  -->
+        <div class="ID">
+            ID         <input type="text"      placeholder="ID를 입력하세요." />            <button> 중복확인 </button>
+        </div>
+
+        <!-- 3.  name  -->
+        <div class="name">
+            이름         <input type="text"      placeholder="이름을 입력하세요." />
+        </div>
+        
+        <!-- 4.  정글랩 (드롭다운) -->
+        <div class="dropdown">
+            <label for="term1">정글랩</label>
+            <select id="term1">
+                <option selected>정글랩를 선택해주세요</option>
+                <option>SW-AI Lap</option>
+                <option>Game Lap</option>
+                <option>Game Tech Lap</option>
+            </select>
+        </div>
+
+        <!-- 5.  기수 (드롭다운) -->
+         <div class="dropdown">
+            <label for="term2">기수</label>
+             <select id="term2" >
+                <option selected>기수를 선택해주세요</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+            </select>
+        </div>
+
+        <!-- 6.  번호  -->
+        <div class="number">
+            번호         <input type="number"      placeholder="번호을 입력하세요." />
+        </div>
+
+        <!-- 7.  PW   -->
+        <div class="PW">
+            Password   <input type="password" id="pw" placeholder="Password를 입력하세요." />
+        </div>
+
+        <!-- 8.  PW 확인  -->
+        <div class="PW check">
+            Password   <input type="password" id="pw" placeholder="다시한번 입력하세요." />
+        </div>
+
+        <!-- 9.  회원등록  -->
+        <div class="signup button">
+             <button> 회원등록 </button>
+        </div>
+
+    </div>
+</body>
+</html>
