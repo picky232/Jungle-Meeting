@@ -1,0 +1,61 @@
+{% extends "header.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+     -->
+    <title>{% block title %}Jungle Meeting{% endblock %}</title>
+    <style>
+        
+    </style>
+</head>
+
+<body>
+    {% block content %}
+    <div class="contents">
+        <div class="explain">
+            <h1 style="text-align: center; padding: 20px; color: black;">설명이 들어갑니다</h1>
+        </div>
+        <div class="main-box">
+            <div class="tag-box">
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+                <span class="tag is-light">고양이</span>
+            </div>
+            <div class="card-boxes">
+                <div class="jungle-card">
+                    <div class="cd-profile-photo">
+                        <img src="{{ url_for('static', filename='images/IMG_0224.jpg') }}" alt="photo" srcset="">
+                    </div>
+                    <div class="cd-comments">
+                        <div class="cd-name">성명 : 신지호</div>
+                        <div class="lab-type">SW-AI랩(정글) </div>
+                        <div class="yearNum">13기-8</div>
+                        <div class="personal-tag"></div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

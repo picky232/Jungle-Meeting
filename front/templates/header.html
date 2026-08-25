@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <title>{% block title %}Jungle Meeting{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="#"><span class="word jungle">Jungle</span> <span class="word meeting">Meeting</span></a>
+        </div>
+        <!-- <div class="sign_btn">
+            <button class="button is-skyblue">로그인</button>
+            <button class="button is-skyblue">회원가입</button>
+        </div> -->
+        <div class="userInfo">
+            <div class="pr-photo">
+                <img src="{{ url_for('static', filename='images/IMG_0224.jpg') }}" alt="" srcset="">
+            </div>
+            <div class="pr-name">
+                홍길동
+            </div>
+            <div class="pr-arrow">
+                <div id="arrow-down" style="cursor: pointer; width: 25px; height: 25px; border-radius: 50%;" onclick="openmenu()"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.003 18.626l7.081-7.081L25 13.46l-8.997 8.998-9.003-9 1.917-1.916z"/></svg></div>
+            </div>
+        </div>
+        <div class="infomenu">
+            <input id="rewriteInfobtn" type="button" value="기본정보수정" onclick="rewriteInfo()">
+            <input id="logoutbtn" type="button" value="로그아웃" onclick="logout()">
+        </div>
+    </header>
+    {% block content %}
+    {% endblock %}
+</body>
+<script src="{{ url_for('static', filename='script.js')}}"></script>
+</html>

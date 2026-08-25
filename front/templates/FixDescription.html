@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+        <style>
+            *{
+                font-family: 'Noto Sans KR', sans-serif;
+            }
+            .dh-top{
+                display: flex;
+                height: 10dvh;
+                border: 3px solid black;
+                margin: 2px;
+                justify-content: center;
+                align-items: center;
+            }
+            .logo{
+                font-size: 48px;
+            }
+            .logo-jungle{
+                color: chartreuse;
+                font-weight: 1000;
+                -webkit-text-stroke: 1px #000000;
+            }
+            .logo-meeting{
+                color: #FFFFFF;
+                font-weight: 1000;
+                -webkit-text-stroke: 1px #000000;
+            }
+            .profile-img-dh{
+                width: 200px !important;
+                height: 200px !important;
+                object-fit: cover;
+                margin: 0 auto;
+            } 
+            .profile{
+                margin: 30px;
+                width: calc(100% - 60px);
+                height: calc(100dvh - 60px - 10dvh);
+            }
+            .profile-user-info{
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                max-width: 20%;
+            }
+            .profile-user-info-text{
+                font-size: 24px;
+                font-weight: 500;
+                color:#000000;
+            }
+            .profile-line{
+                width: 200px;
+                margin: 0 auto;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                background-color:#000000;
+            }
+            .profile-desc{
+                margin: 20px;
+                padding: 2%;
+                min-height: 50%;
+                max-height: 50%;
+                overflow-y: auto;
+            }
+            .profile-tag-list{
+                margin: 20px;
+                padding: 2%;
+                min-height: 10%;
+                max-height: 10%;
+                overflow-y: auto;
+            }
+            .profile-tag{
+                flex: 0 0 auto;
+                padding: 5px 10px;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                background-color: gray;
+            }
+            .profile-info-fix-btn{
+                min-width: 100%;
+            }
+            .profile-info-input-field{
+                margin: 5px;
+                padding: 2%;
+                min-height: 10%;
+                max-height: 10%;
+                max-width: 45%;
+                overflow-y: auto;
+            }
+            .profile-info-input-field-2{
+                margin: 5px;
+                padding: 2%;
+                min-height: 10%;
+                max-height: 10%;
+                max-width: 20%;
+                overflow-y: auto;
+            }
+           .custom-select {
+                width: 40%;
+                max-width: 40%;
+            }
+            .custom-button{
+                background-color: gray;
+            }
+            .custom-button-2{
+                align-items: end;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="dh-top">
+            <h1 class="logo">
+                <span class="logo-jungle">Jungle</span><span class="logo-meeting">Meeting</span>
+            </h1>
+        </header>
+
+    <div class="columns">
+        <div class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
+            <div class="card-image">
+                <figure class="image">
+                    <img class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="media">
+                    <div class="media-content">
+                        <input type="file" id="img-input" name="profile" accept="image/*">
+                        <hr class="profile-line"> <br>
+                        <div class="profile-user-info-text has-text-centered" style="">{{name}}</div>
+                        <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
+                        <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
+                        <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
+                        <div class="button profile-info-fix-btn" onclick="deleteAccount()" style="background-color: #AEE996;">회원탈퇴</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column card profile">
+            <div> 
+                <input class="input profile-info-input-field" placeholder="이름 변경" type="text"/>
+                <input class="input profile-info-input-field" placeholder="아이디 변경" type="text"/>
+                <div class="is-flex is-align-content-center custom-select">
+                    <select>
+                        <option>랩 변경</option>
+                        <option>SW-AI</option>
+                        <option>GAME LAB</option>
+                        <option>GAME TECH LAB</option>
+                    </select>
+                </div>
+                <input class="input profile-info-input-field-2" placeholder="기수 변경" type="text"/>
+                <input class="input profile-info-input-field-2" placeholder="번호 변경" type="text"/>
+            </div>
+            <div class="card profile-desc">
+                {{desc}}
+            </div>
+            <div class="card profile-tag-list">
+                <div>
+                    <div class="columns is-multiline" id="tags">
+                        <button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>
+                    </div>
+                </div>
+            </div>
+
+        <button class="button custom-button-2" onclick="save()" style="background-color: #4DA359;">저장</button>
+        <button class="button custom-button-2" onclick="backspace()" style="background-color: #da0000;">취소</button>
+        </div>
+    </div>
+
+    
+        <script>
+            function deleteAccount()
+            {
+                // to server
+            }
+            function onClickAddTagBtn()
+            {
+                let tags = $(`#tags`);
+                let addBtn = tags.find(".custom-button");
+                let input_html = `<div id="taginput"><input class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()">추가</button></div>`;
+                
+                addBtn.replaceWith(input_html);
+            }
+            function addTag()
+            { 
+                let taginput = $(`#taginput`);
+                let temp = taginput.find(".tag-name-input");
+                let tagname = temp.val();
+                let tag_html = `<div class="column profile-tag">${tagname}</div>`;
+                $("#tags").append(tag_html);
+                
+                let input_html = `<button class="button custom-button" onclick="onClickAddTagBtn()">+</button>`;
+                taginput.replaceWith(input_html);
+            }
+            function save()
+            {
+                // to server
+            }
+            function backspace()
+            {
+                history.back();
+            }
+        </script>
+    </body>
+</html>
