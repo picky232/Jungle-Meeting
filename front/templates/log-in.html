@@ -1,55 +1,171 @@
-<!-- 순서
-    <1> 로그인 페이지 
-        1.  제목 (css)
-        2.  ID
-        3.  PW (안보이게)
-        4.  로그인 버튼
-        5.  회원가입 버튼 (밑줄, 2페이지 이동)
- -->
-
-
-
-<!-- ===================================================== -->
-git add .
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Jungle Meeting | Log-in </title>
-    <link rel="stylesheet" type="text/css" href = "log-in.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jungle Meeting | Log-in</title>
+
+  <style>
+    /* 전체 화면 */
+    body {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #333;
+    }
+
+    /* 로그인 박스 */
+    .login-container {
+      width: 400px;
+      background-color: #f9f9f9;
+      padding: 30px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* 제목 */
+    .title {
+      text-align: center;
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    /* 입력 영역 */
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-row label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .form-row input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    /* 경고 메시지 */
+    .warning {
+      color: #e74c3c;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    /* 버튼 */
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button.login {
+      background-color: #4DA359; 
+      color: #fff;
+    }
+
+    button.login:hover {
+      background-color: #6CBA61;
+    }
+
+    button.signup {
+      background-color: #fff;
+      border: 1px solid #4DA359;
+      color: #29382b;
+    }
+
+    button.signup:hover {
+      background-color: #f0f0f0;
+    }
+
+    /* 링크 */
+    .link {
+      text-align: right;
+    }
+
+    .link a {
+      font-size: 13px;
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="log-in">
+  <div class="login-container">
 
-        <!-- 1 -->
-        <div class="title">
-            <h1>제목</h1>
-        </div>
-        
-        <!-- 2 ID --> 
-        <div class="ID">
-            ID:         <input type="text"      placeholder="ID를 입력하세요." />
-        </div>
-            
-        <!-- 3 PW -->
-        <div class="PW">
-            Password:   <input type="password"  placeholder="Password를 입력하세요." />
-        </div>
-            
-        <div class="log-in button">
-        <!-- 4 로그인 버튼 -->
-            <button> 로그인하기 </button>
-        </div>
-    
-        <div class="signup button">
-        <!-- 5 회원가입 버튼 -->
-             <a href="signup.html">회원가입 하기</a>
-        </div>
-
+    <!-- 제목 -->
+    <div class="title">
+      <h1>로그인 페이지</h1>
     </div>
 
+    <!-- ID -->
+    <div class="form-row">
+      <label for="userId">ID</label>
+      <input type="text" id="userId" name="userId" placeholder="ID를 입력하세요.">
+    </div>
+
+    <!-- PW -->
+    <div class="form-row">
+      <label for="userPw">PW</label>
+      <input type="password" id="userPw" name="userPw" placeholder="Password를 입력하세요.">
+    </div>
+
+    <!-- 경고 메시지 -->
+    <div id="warning" class="warning"></div>
+
+    <!-- 로그인 버튼 -->
+    <button id="loginBtn" class="login">로그인</button>
+
+    <!-- 회원가입 버튼 -->
+    <button class="signup" onclick="location.href='signup.html'">회원가입 하기</button>
+
+  </div>
+
+  <script>
+    document.getElementById("loginBtn")
+      .addEventListener("click", function(event) {
+        const userId = document.getElementById("userId").value.trim();
+        const userPw = document.getElementById("userPw").value.trim();
+        const warning = document.getElementById("warning");
+
+        if (userId === "" && userPw === "") {
+          warning.textContent = "ID와 PW를 입력해주세요!";
+          event.preventDefault();
+        } else if (userId === "") {
+          warning.textContent = "ID를 입력해주세요!";
+          event.preventDefault();
+        } else if (userPw === "") {
+          warning.textContent = "PW를 입력해주세요!";
+          event.preventDefault();
+        } else {
+          warning.textContent = ""; // 정상 입력 시 경고 제거
+        }
+    });
+  </script>
 </body>
 </html>
