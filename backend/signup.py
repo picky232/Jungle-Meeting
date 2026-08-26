@@ -78,7 +78,7 @@ def signup():
         'tags': [],
         'password': hashed_password  # 그대로 바이트로 저장
     }
-
+ 
     collection.insert_one(doc)  # users 컬렉션에 문서 삽입
 
     return jsonify({'result': 'success'})  # 성공 응답 반환
