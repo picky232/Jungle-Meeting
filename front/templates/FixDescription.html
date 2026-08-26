@@ -64,10 +64,10 @@
                 background-color:#000000;
             }
             .profile-desc{
-                margin: 20px;
-                padding: 2%;
-                min-height: 50%;
-                max-height: 50%;
+                margin: 1%;
+                padding: 1%;
+                min-height: 90%;
+                min-width: 97%;
                 overflow-y: auto;
             }
             .profile-tag-list{
@@ -92,6 +92,7 @@
                 padding: 2%;
                 min-height: 10%;
                 max-height: 10%;
+                min-width: 30%;
                 max-width: 45%;
                 overflow-y: auto;
             }
@@ -104,14 +105,42 @@
                 overflow-y: auto;
             }
            .custom-select {
-                width: 40%;
-                max-width: 40%;
+                margin: 5px;
+                padding: 2%;
+                min-height: 10%;
+                max-height: 10%;
+                max-width: 20%;
+            }
+            .profile-id-button{
+                margin: 5px;
+                padding: 2%;
+                min-height: 10%;
+                max-height: 10%;
+                min-width: 20%;
+                max-width: 20%;
             }
             .custom-button{
                 background-color: gray;
             }
-            .custom-button-2{
-                align-items: end;
+            .profile-fix-desc{
+                height: 50%;
+            }
+            .left {
+              justify-content: flex-start;
+            }
+            .center {
+              justify-content: center;
+            }
+            .right {
+              justify-content: flex-end;
+            }
+            .container{
+                display: flex;
+            }
+            .profile-default-info{
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
             }
         </style>
     </head>
@@ -146,33 +175,32 @@
         </div>
 
         <div class="column card profile">
-            <div> 
-                <input class="input profile-info-input-field" placeholder="이름 변경" type="text"/>
-                <input class="input profile-info-input-field" placeholder="아이디 변경" type="text"/>
-                <div class="is-flex is-align-content-center custom-select">
-                    <select>
-                        <option>랩 변경</option>
-                        <option>SW-AI</option>
-                        <option>GAME LAB</option>
-                        <option>GAME TECH LAB</option>
-                    </select>
-                </div>
-                <input class="input profile-info-input-field-2" placeholder="기수 변경" type="text"/>
-                <input class="input profile-info-input-field-2" placeholder="번호 변경" type="text"/>
+            <div class="profile-default-info">
+                <input class="profile-info-input-field" placeholder="이름 변경" type="text"/>
+                <input class="profile-info-input-field" placeholder="아이디 변경" type="text"/>
+                <button class="profile-id-button" style="background-color: #AEE996;" onclick="id()">아이디 중복 확인</button>
+                <select class="custom-select">
+                    <option>랩 변경</option>
+                    <option>SW-AI</option>
+                    <option>GAME LAB</option>
+                    <option>GAME TECH LAB</option>
+                </select>
+                <input class="profile-info-input-field-2" placeholder="기수 변경" type="text"/>
+                <input class="profile-info-input-field-2" placeholder="번호 변경" type="text"/>
             </div>
-            <div class="card profile-desc">
-                {{desc}}
+            <div class="profile-fix-desc">
+                <span class="is-size-4" style="padding-left: 1%; color:black;">내 정보 변경</span>
+                <input class="profile-desc" type="text" value="{{desc}}">
             </div>
             <div class="card profile-tag-list">
-                <div>
-                    <div class="columns is-multiline" id="tags">
-                        <button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>
-                    </div>
+                <div class="columns is-multiline" id="tags">
+                    <button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>
                 </div>
             </div>
-
-        <button class="button custom-button-2" onclick="save()" style="background-color: #4DA359;">저장</button>
-        <button class="button custom-button-2" onclick="backspace()" style="background-color: #da0000;">취소</button>
+            <div class="container right">
+                <button class="button" onclick="save()" style="background-color: #4DA359;">저장</button>
+                <button class="button" onclick="backspace()" style="background-color: #da0000;">취소</button>
+            </div>
         </div>
     </div>
 
@@ -186,19 +214,23 @@
             {
                 let tags = $(`#tags`);
                 let addBtn = tags.find(".custom-button");
-                let input_html = `<div id="taginput"><input class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()">추가</button></div>`;
+                let input_html = `<div id="taginput"><input class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
                 
                 addBtn.replaceWith(input_html);
             }
             function addTag()
-            { 
+            {
                 let taginput = $(`#taginput`);
                 let temp = taginput.find(".tag-name-input");
                 let tagname = temp.val();
-                let tag_html = `<div class="column profile-tag">${tagname}</div>`;
+
+                if(!tagname)
+                    return;
+
+                let tag_html = `<div class="column profile-tag" style="background-color: #6CBA61;">${tagname}</div>`;
                 $("#tags").append(tag_html);
                 
-                let input_html = `<button class="button custom-button" onclick="onClickAddTagBtn()">+</button>`;
+                let input_html = `<button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>`;
                 taginput.replaceWith(input_html);
             }
             function save()
@@ -208,6 +240,10 @@
             function backspace()
             {
                 history.back();
+            }
+            function id()
+            {
+                // to server
             }
         </script>
     </body>
