@@ -23,7 +23,7 @@
 <script>
     async function maketags() {
         try {
-            const response = await fetch('/maketags');
+            const response = await fetch('/maketags'); //
             const tags = await response.json(); // [{'name': '게임'}, {'name': '고양이'}]
 
             const container = document.querySelector('.tag-box');
@@ -113,7 +113,8 @@
     });
 
     function moveprofilePage(id) {
-        window.location.href = `{{url_for('profilePage', user_id="${id}")}}`
+        window.location.href = `/profile/${encodeURIComponent(id)}`
     }
+    
 </script>
 {% endblock %}

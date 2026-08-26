@@ -9,7 +9,3 @@ arrow.addEventListener('click', () => {
 function rewriteInfo() {
     // window.location.href= `{{url_for('profilePage{{id}}')}}`
 }
-
-function movemainPage() {
-    window.location.href = "/"
-}
