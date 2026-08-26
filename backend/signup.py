@@ -9,7 +9,12 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from pymongo import MongoClient
 import bcrypt
 
-app = Flask(__name__)
+app = Flask( 
+    # front폴더로 나누어서 Flask에서 templates, static을 찾게되면 backend/templates 등으로 찾게되서 경로 오류 발생함
+    __name__, 
+    template_folder="../front/templates",
+    static_folder="../front/static"
+)
 
 # MongoDB 연결 설정 
 client = MongoClient('mongodb://localhost:5000/') #임시링크 
@@ -73,4 +78,4 @@ def signup():
     return jsonify({'result': 'success'})
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=3000, debug=True)
