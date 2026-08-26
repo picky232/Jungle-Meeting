@@ -1,3 +1,5 @@
+{% extends "header.html" %}
+
 <!DOCTYPE html>
 <html lang="ko">
     <head>
@@ -11,22 +13,6 @@
         <style>
             *{
                 font-family: 'Noto Sans KR', sans-serif;
-            }
-            .dh-top{
-                display: flex;
-                height: 10dvh;
-                border: 3px solid black;
-                margin: 2px;
-                justify-content: center;
-                align-items: center;
-            }
-            .logo{
-                font-size: 48px;
-            }
-            .logo-jungle{
-                color: chartreuse;
-                font-weight: 1000;
-                -webkit-text-stroke: 1px #000000;
             }
             .logo-meeting{
                 color: #FFFFFF;
@@ -87,12 +73,6 @@
     </head>
 
     <body>
-        <header class="dh-top">
-            <h1 class="logo">
-                <span class="logo-jungle">Jungle</span><span class="logo-meeting">Meeting</span>
-            </h1>
-        </header>
-
     <div class="columns">
         <div class="column is-narrow card profile profile--info is-flex is-justify-content-center is-align-items-center">
             <div class="card-image">
