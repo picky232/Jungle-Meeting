@@ -150,6 +150,7 @@
         const imgInputButton = document.getElementById("img-input-button");
         const removeButton = document.getElementById("img-remove-button");
         const profileImg = document.getElementById("profile-img");
+        const idInput = document.getElementById("id-field");
 
         // db에서 받아왔다 치고
         const testTags = ["게임", "게임2", "게임3", "고양이", "개", "개발", "SW", "AI"];
@@ -171,8 +172,13 @@
             }
         });
         removeButton.addEventListener("click", function () {
-            profileImg.src = "";
+            profileImg.src = "{{ url_for('static', filename='images/IMG_0224.jpg')}}";
         });
+        idInput.addEventListener("change", function()
+        {
+            canId = false;
+            checkedId = false;
+        })
     });
 
     function deleteAccount() {
@@ -201,7 +207,16 @@
     }
     function save() {
         // to server
-        if (!checkedId) {
+        const oldId = "{{userId}}";
+        const newId = document.getElementById("id-field").value;
+
+        if(oldId == newId)
+        {
+            checkedId = true;
+            canId = true;
+        }
+        else if (!checkedId) 
+        {
             alert("아이디 중복 확인 해주세요.");
             return;
         }
@@ -218,32 +233,39 @@
         const num = document.getElementById("num-field");
         const desc = document.getElementById("desc-field");
         const tags = document.getElementById("tags").children;
+        const imgInput = document.getElementById("img-input");
 
         let tagTexts = [];
         for (let i = 0; i < tags.length; ++i) {
-            if (tags[i]) {
-                tagTexts.push(tags[i].textContent);
+            if (tags[i].classList.contains("profile-tag")) {
+                tagTexts.push(tags[i].textContent.trim());
             }
         }
-        const data = {
-            name: name.value,
-            id: id.value,
-            lab: lab.value,
-            gen: gen.value,
-            num: num.value,
-            desc: desc.value,
-            tags: tagTexts
-        };
+
+        const formData = new FormData();
+        formData.append('name', name.value);
+        formData.append('id', id.value);
+        formData.append('lab', lab.value);
+        formData.append('gen', gen.value);
+        formData.append('num', num.value);
+        formData.append('desc', desc.value);
+        formData.append('tags', JSON.stringify(tagTexts));
+
+        if(imgInput.files.length > 0)
+        {
+            formData.append("profileImg", imgInput.files[0]);
+        }
 
         $.ajax({
             type: "PATCH",
-            url: `/userInfoPatch`,
-            data: JSON.stringify(data),
-            contentType: "application/json",
+            url: `/userInfoPatch/{{userId}}`,
+            data: formData,
+                processData: false, // formData 사용 시 필수
+                contentType: false, // formData 사용 시 필수
 
             success: function (response) {
                 alert("저장 성공!");
-                window.location.href = `{{url_for('descriptionPage') }}`;
+                window.location.href = `/description/${id.value}`;
             },
             error: function () {
                 alert("저장 실패!");
@@ -259,18 +281,23 @@
         // to server
         $.ajax({
             type: "GET",
-            url: `/checkId/${id}`,
+            url: `/checkId/{{userId}}/${id}`,
             success: function (response) {
                 if (response["result"] == "success") {
                     alert("사용할 수 있는 아이디입니다.");
                     canId = true;
                     checkedId = true;
                 }
+                else
+                {
+                    alert("사용할 수 없는 아이디입니다.");
+                    canId = false;
+                    checkedId = true;
+                }
             },
-            error: function () {
-                alert("사용할 수 없는 아이디입니다.");
-                canId = false;
-                checkedId = true;
+            error: function () 
+            { 
+                alert("서버 요청 중 오류가 발생했습니다.");
             },
         });
     }
@@ -298,7 +325,7 @@
                     </div>
                     <hr class="profile-line"> <br>
                     <div class="profile-user-info-text has-text-centered">{{name}}</div>
-                    <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
+                    <div class="profile-user-id-text has-text-centered">{{userId}}</div> <br>
                     <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
                     <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
                     <div class="button profile-info-fix-btn" onclick="deleteAccount()"
@@ -310,17 +337,16 @@
 
     <div class="column card profile">
         <div class="profile-default-info">
-            <input id="name-field" class="profile-info-input-field" placeholder="이름 변경" type="text" />
-            <input id="id-field" class="profile-info-input-field" placeholder="아이디 변경" type="text" />
+            <input id="name-field" class="profile-info-input-field" placeholder="이름 변경" type="text" value="{{name}}"/>
+            <input id="id-field" class="profile-info-input-field" placeholder="아이디 변경" type="text" value="{{userId}}"/>
             <button class="profile-id-button" style="background-color: #AEE996;" onclick="checkId()">중복 확인</button>
             <select id="lab-field" class="custom-select">
-                <option>랩 변경</option>
-                <option>SW-AI</option>
-                <option>GAME LAB</option>
-                <option>GAME TECH LAB</option>
+                <option value="SW-AI" {% if lab == "SW-AI" %}selected{% endif %}>SW-AI</option>
+                <option value="GAME LAB" {% if lab == "GAME LAB" %}selected{% endif %}>GAME LAB</option>
+                <option value="GAME TECH LAB" {% if lab == "GAME TECH LAB" %}selected{% endif %}>GAME TECH LAB</option>
             </select>
-            <input id="gen-field" class="profile-info-input-field-2" placeholder="기수 변경" type="text" />
-            <input id="num-field" class="profile-info-input-field-2" placeholder="번호 변경" type="text" />
+            <input id="gen-field" class="profile-info-input-field-2" placeholder="기수 변경" type="text" value="{{gen}}"/>
+            <input id="num-field" class="profile-info-input-field-2" placeholder="번호 변경" type="text" value="{{num}}"/>
         </div>
         <div class="profile-fix-desc columns">
             <span class="is-size-4 column is-narrow"
@@ -334,11 +360,11 @@
                     style="background-color: #6CBA61; color: #000000;">+</button>
                 <datalist id="tag-list">
                     {% for tag in dbTags %}
-                    <option value="{{tag.name}}">
-                        {% endfor %}
+                        <option value="{{tag}}">
+                    {% endfor %}
                 </datalist>
                 {% for tag in tags %}
-                <div class="column profile-tag" style="background-color: #6CBA61;">{{tag.name}}</div>
+                    <div class="column profile-tag" style="background-color: #6CBA61;">{{tag}}</div>
                 {% endfor %}
             </div>
         </div>
