@@ -54,28 +54,30 @@ client = MongoClient(mongo_uri, tlsCAFile=ca) # 인증서 검증시 ca에 담아
 db = client["JM"]
 collection = db["users"]
 
-# collection.insert_one({
-#         "userId": "test1",
-#         "name":"jiho", 
-#         "lab": "SW-AI랩",
-#         "gen": "13기",
-#         "tags" : ["강아지", "고양이"]
-#     })
+tags_collection = db["tags"]
 
-collection.delete_many({ "userId": "test1" })
 
 # 시작 메인 페이지
 @app.route('/')
 def mainpage():
-    # collection.insert_one({"userId": "test1", })
-    all_users = list(collection.find({}, {"_id": 0}))
-    # print(all_users)
     return render_template('main.html')
+
+
+@app.route('/maketags', methods=['GET'])
+def makeTag():
+    tagData = list(tags_collection.find({}, {"_id":0}))
+    print(tagData)
+    return jsonify(tagData)
+
 
 @app.route('/makeCard/jungle', methods=['GET'])
 def makeCard():
-    userData = list(collection.find({}, {"_id":0}))
-    print(userData)
+    userData = list(collection.find({}, {
+        "_id":0, 
+        "desc":0,
+        "password":0
+        }))
+    # 딕셔너리에서 password필드 제거
     return jsonify(userData)
 
 # 로그인 페이지 - 중복확인
@@ -85,12 +87,12 @@ def loginGet():
 
 @app.route('/login', methods=['POST'])
 def login():
-    return render_template('')
+    return render_template('login.html')
 
 # 회원가입페이지
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signUp():
-    return render_template('')
+    return render_template('signup.html')
 
 # 프로필확인 페이지 - 사용자 -> 다른사용자 프로필 확인
 @app.route('/profile', methods=['GET'])
@@ -110,3 +112,5 @@ def reWrite():
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
+
+    
