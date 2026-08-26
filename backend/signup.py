@@ -2,11 +2,12 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for  	
 from pymongo import MongoClient			# MongoDB 연결을 위한 모듈
 import bcrypt  	# 비밀번호 해시 암호화를 위한 라이브러리
 									
-app = Flask(__name__)  # Flask 애플리케이션 객체 생성
+app = Flask(__name__, template_folder="front/templates")  # Flask 애플리케이션 객체 생성
 
-# MongoDB 연결 설정 
-client = MongoClient('mongodb://localhost:5000/')  # 로컬 MongoDB 서버에 연결 (임시포트)
-db = client.jungle_meeting  # 사용할 DB 선택
+# MongoDB 클러스터 연결
+client = MongoClient('mongodb://name:password@localhost:27017/')
+db = client["JM"]
+collection = db["users"]
 
 # 화면 전환 라우트
 @app.route('/signup', methods=['GET'])  # 회원가입 페이지 요청(GET)
@@ -24,7 +25,7 @@ def check_userid():
     input_id = request.form.get('give_id')  # 클라이언트에서 전달된 아이디 값 받기
     
     # DB에서 해당 ID 탐색
-    user = db.users.find_one({'id': give_id})  # users 컬렉션에서 id가 일치하는 문서 검색
+    user = db.users.find_one({'id': input_id})  # users 컬렉션에서 id가 일치하는 문서 검색
     
     if user:
         # 2. 중복인 경우
@@ -49,16 +50,16 @@ def signup():
         return jsonify({'result': 'fail', 'msg': '이미 존재하는 ID입니다.'})  # 중복이면 실패 응답
 
     # 5. 비밀번호 해시(Hash) 암호화
-    hashed_password = bcrypt.hashpw(pw_receive.encode('utf-8'), bcrypt.gensalt())  # 비밀번호를 해시 처리
+    hashed_password = bcrypt.hashpw(pw_receive.encode('utf-8'), bcrypt.gensalt()) 
 
     # 4. 아이디를 포함한 모든 정보 DB에 저장
     doc = {
-        'id': id_receive,                       # 아이디
-        'name': name_receive,                   # 이름
-        'lab': sel1_receive,                    # 정글랩
-        'gisu': sel2_receive,                   # 기수
-        'number': number_receive,               # 번호
-        'password': hashed_password.decode('utf-8')  # 해시된 비밀번호 문자열로 저장
+        'id': id_receive,
+        'name': name_receive,
+        'lab': sel1_receive,
+        'gisu': sel2_receive,
+        'number': number_receive,
+        'password': hashed_password  # 그대로 바이트로 저장
     }
     
     db.users.insert_one(doc)  # users 컬렉션에 문서 삽입
