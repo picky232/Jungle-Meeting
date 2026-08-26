@@ -5,6 +5,9 @@ from dotenv import load_dotenv # dotenv 라이브러리 불러오기
 # CA(인증기관) 루트 인증서 묶음 들고있는 패키지
 import certifi
 
+# JWT 인증
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
 # .env파일 로드
 load_dotenv()
 
@@ -14,6 +17,10 @@ app = Flask(
     template_folder="../front/templates",
     static_folder="../front/static"
 )
+
+#실제 운영환경 안전하게 관리 필요
+app.config["JWT_SECRET_KEY"] = "your-super-secret-key"
+jwt = JWTManager(app)
 
 # os.environ.get으로 .env에 넣은 변수명 가져오기
 mongo_uri = os.environ.get('MONGO_URI')
