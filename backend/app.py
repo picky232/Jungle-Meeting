@@ -33,7 +33,6 @@ client = MongoClient(mongo_uri, tlsCAFile=ca) # 인증서 검증시 ca에 담아
 db = client["JM"]
 collection = db["users"]
 
-
 # 시작 메인 페이지
 @app.route('/')
 def mainpage():
@@ -70,3 +69,5 @@ def reWrite():
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
+
+    
