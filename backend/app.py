@@ -53,16 +53,20 @@ ca = certifi.where()
 client = MongoClient(mongo_uri, tlsCAFile=ca) # 인증서 검증시 ca에 담아둔 경로 사용
 db = client["JM"]
 collection = db["users"]
-
-collection.delete_many({ "userId": "test1" })
+tags_collection = db["tags"]
 
 # 시작 메인 페이지
 @app.route('/')
 def mainpage():
-    # collection.insert_one({"userId": "test1", })
-    all_users = list(collection.find({}, {"_id": 0}))
-    # print(all_users)
     return render_template('main.html')
+
+
+@app.route('/maketags', methods=['GET'])
+def makeTag():
+    tagData = list(tags_collection.find({}, {"_id":0}))
+    print(tagData)
+    return jsonify(tagData)
+
 
 @app.route('/makeCard/jungle', methods=['GET'])
 def makeCard():
@@ -71,8 +75,6 @@ def makeCard():
         "desc":0,
         "password":0
         }))
-    print(userData)
-
     # 딕셔너리에서 password필드 제거
     return jsonify(userData)
 
