@@ -1,3 +1,5 @@
+{% extends "header.html" %}
+
 <!DOCTYPE html>
 <html lang="ko">
     <head>
@@ -12,27 +14,6 @@
         <style>
             *{
                 font-family: 'Noto Sans KR', sans-serif;
-            }
-            .dh-top{
-                display: flex;
-                height: 10dvh;
-                border: 3px solid black;
-                margin: 2px;
-                justify-content: center;
-                align-items: center;
-            }
-            .logo{
-                font-size: 48px;
-            }
-            .logo-jungle{
-                color: chartreuse;
-                font-weight: 1000;
-                -webkit-text-stroke: 1px #000000;
-            }
-            .logo-meeting{
-                color: #FFFFFF;
-                font-weight: 1000;
-                -webkit-text-stroke: 1px #000000;
             }
             .profile-img-dh{
                 width: 200px !important;
@@ -75,7 +56,7 @@
                 margin: 1%;
                 padding: 2%;
                 min-height: 10%;
-                max-height: 10%;
+                max-height: 15%;
                 overflow-y: auto;
             }
             .profile-tag{
@@ -137,7 +118,7 @@
             }
             .sch-tag{
                 font-size: 2em;
-                background-color: #000000;
+                background-color: black;
                 width: 200px;
                 height: 50px;
             }
@@ -145,12 +126,6 @@
     </head>
 
     <body>
-        <header class="dh-top">
-            <h1 class="logo">
-                <span class="logo-jungle">Jungle</span><span class="logo-meeting">Meeting</span>
-            </h1>
-        </header>
-
     <div class="columns">
         <div class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
             <div class="card-image">
@@ -167,7 +142,7 @@
                             <button class="select-button file-button" id="img-remove-button" style="background-color: #ea3030;" >이미지 삭제</button>
                         </div>
                         <hr class="profile-line"> <br>
-                        <div class="profile-user-info-text has-text-centered" style="">{{name}}</div>
+                        <div class="profile-user-info-text has-text-centered">{{name}}</div>
                         <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
                         <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
                         <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
@@ -199,6 +174,15 @@
             <div class="card profile-tag-list">
                 <div class="columns is-multiline" id="tags">
                     <button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>
+                    <datalist id="tag-list">
+                        <option value="게임">
+                        <option value="게임2">
+                        <option value="게임3">
+                        <option value="게임4">
+                        <option value="게임5">
+                        <option value="게임6">
+                        <option value="고양이2">
+                    </datalist>
                     {% for tag in tags %}
                         <div class="column profile-tag" style="background-color: #6CBA61;">{{tag.name}}</div> 
                     {% endfor %}
@@ -219,7 +203,7 @@
             const profileImg = document.getElementById("profile-img");
 
             // db에서 받아왔다 치고
-            const testTags = ["게임", "고양이", "개", "개발", "SW", "AI"];
+            const testTags = ["게임", "게임2", "게임3", "고양이", "개", "개발", "SW", "AI"];
 
             imgInputButton.addEventListener("click", function() 
             {
@@ -254,51 +238,9 @@
             {
                 let tags = $(`#tags`);
                 let addBtn = tags.find(".custom-button");
-                let input_html = `<div id="taginput"><input id="schTag" class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div> <div id="content" class="is-grid"></div>`;
+                let input_html = `<div id="taginput"><input id="schTag" list="tag-list" class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
                 
                 addBtn.replaceWith(input_html);
-
-                const schTag = document.getElementById("schTag");
-                schTag.addEventListener("keyup", function() 
-                {
-                    const content = document.getElementById("content");
-                    
-                    content.innerHTML = "";
-                    content.style.display = "none";
-
-                    if(!this.value.trim())
-                    {
-                        return;
-                    }
-
-                    let schArr = [];
-                    for(let i =0;i<testTags.length;++i)
-                    {
-                        if(testTags[i].includes(this.value))
-                        {
-                            schArr.push(``);
-                        }
-                    }
-
-                    if(schArr.length > 0)
-                    {
-                        schArr.forEach((item) => 
-                        {
-                            content.innerHTML += item;
-                        })
-                        content.style.display = "block";
-                    }
-
-                    if(event.keyCode == 13)
-                    {
-                        console.log(content);
-                        if(content.children[0])
-                        {
-                            schTag.value = content.children[0].innerHTML;
-                            content.style.display = "none";
-                        }
-                    }
-                });
             }
             function addTag()
             {
