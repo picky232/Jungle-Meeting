@@ -1,3 +1,5 @@
+{% extends "header.html" %}
+
 <!DOCTYPE html>
 <html lang="ko">
     <head>
@@ -12,27 +14,6 @@
         <style>
             *{
                 font-family: 'Noto Sans KR', sans-serif;
-            }
-            .dh-top{
-                display: flex;
-                height: 10dvh;
-                border: 3px solid black;
-                margin: 2px;
-                justify-content: center;
-                align-items: center;
-            }
-            .logo{
-                font-size: 48px;
-            }
-            .logo-jungle{
-                color: chartreuse;
-                font-weight: 1000;
-                -webkit-text-stroke: 1px #000000;
-            }
-            .logo-meeting{
-                color: #FFFFFF;
-                font-weight: 1000;
-                -webkit-text-stroke: 1px #000000;
             }
             .profile-img-dh{
                 width: 200px !important;
@@ -69,12 +50,13 @@
                 min-height: 90%;
                 min-width: 97%;
                 overflow-y: auto;
+                text-wrap-mode: wrap;
             }
             .profile-tag-list{
-                margin: 20px;
+                margin: 1%;
                 padding: 2%;
                 min-height: 10%;
-                max-height: 10%;
+                max-height: 15%;
                 overflow-y: auto;
             }
             .profile-tag{
@@ -89,35 +71,16 @@
             }
             .profile-info-input-field{
                 margin: 5px;
-                padding: 2%;
-                min-height: 10%;
-                max-height: 10%;
-                min-width: 30%;
-                max-width: 45%;
-                overflow-y: auto;
+                width: 50%;
             }
             .profile-info-input-field-2{
                 margin: 5px;
-                padding: 2%;
-                min-height: 10%;
-                max-height: 10%;
-                max-width: 20%;
-                overflow-y: auto;
             }
            .custom-select {
                 margin: 5px;
-                padding: 2%;
-                min-height: 10%;
-                max-height: 10%;
-                max-width: 20%;
             }
             .profile-id-button{
                 margin: 5px;
-                padding: 2%;
-                min-height: 10%;
-                max-height: 10%;
-                min-width: 20%;
-                max-width: 20%;
             }
             .custom-button{
                 background-color: gray;
@@ -140,31 +103,46 @@
             .profile-default-info{
                 display: flex;
                 flex-direction: row;
-                flex-wrap: wrap;
+                max-height: 10%;
+            }
+            .select-button {
+                background-color: #AEE996;
+                color: black;
+            }
+            .select-button:hover {
+                background-color: #4DA359;
+            }
+            .file-button{
+                cursor: pointer;
+                width: 50%;
+            }
+            .sch-tag{
+                font-size: 2em;
+                background-color: black;
+                width: 200px;
+                height: 50px;
             }
         </style>
     </head>
 
     <body>
-        <header class="dh-top">
-            <h1 class="logo">
-                <span class="logo-jungle">Jungle</span><span class="logo-meeting">Meeting</span>
-            </h1>
-        </header>
-
     <div class="columns">
         <div class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
             <div class="card-image">
                 <figure class="image">
-                    <img class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
+                    <img id="profile-img" class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
                 </figure>
             </div>
             <div class="card-content">
                 <div class="media">
                     <div class="media-content">
-                        <input type="file" id="img-input" name="profile" accept="image/*">
+                        <input type="file" id="img-input" class="file-input" accept="image/*" hidden>
+                        <div class="is-flex">
+                            <button class="select-button file-button" id="img-input-button">이미지 업로드</button>
+                            <button class="select-button file-button" id="img-remove-button" style="background-color: #ea3030;" >이미지 삭제</button>
+                        </div>
                         <hr class="profile-line"> <br>
-                        <div class="profile-user-info-text has-text-centered" style="">{{name}}</div>
+                        <div class="profile-user-info-text has-text-centered">{{name}}</div>
                         <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
                         <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
                         <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
@@ -178,7 +156,7 @@
             <div class="profile-default-info">
                 <input class="profile-info-input-field" placeholder="이름 변경" type="text"/>
                 <input class="profile-info-input-field" placeholder="아이디 변경" type="text"/>
-                <button class="profile-id-button" style="background-color: #AEE996;" onclick="id()">아이디 중복 확인</button>
+                <button class="profile-id-button" style="background-color: #AEE996;" onclick="id()">중복 확인</button>
                 <select class="custom-select">
                     <option>랩 변경</option>
                     <option>SW-AI</option>
@@ -190,11 +168,24 @@
             </div>
             <div class="profile-fix-desc">
                 <span class="is-size-4" style="padding-left: 1%; color:black;">내 정보 변경</span>
-                <input class="profile-desc" type="text" value="{{desc}}">
+                <textarea class="text-box profile-desc">{{desc}}</textarea>
             </div>
+            <span class="is-size-4" style="padding-left: 1%; color:black;">관심사 태그</span>
             <div class="card profile-tag-list">
                 <div class="columns is-multiline" id="tags">
                     <button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>
+                    <datalist id="tag-list">
+                        <option value="게임">
+                        <option value="게임2">
+                        <option value="게임3">
+                        <option value="게임4">
+                        <option value="게임5">
+                        <option value="게임6">
+                        <option value="고양이2">
+                    </datalist>
+                    {% for tag in tags %}
+                        <div class="column profile-tag" style="background-color: #6CBA61;">{{tag.name}}</div> 
+                    {% endfor %}
                 </div>
             </div>
             <div class="container right">
@@ -206,6 +197,39 @@
 
     
         <script>
+            const imgInput = document.getElementById("img-input");
+            const imgInputButton = document.getElementById("img-input-button");
+            const removeButton = document.getElementById("img-remove-button");
+            const profileImg = document.getElementById("profile-img");
+
+            // db에서 받아왔다 치고
+            const testTags = ["게임", "게임2", "게임3", "고양이", "개", "개발", "SW", "AI"];
+
+            imgInputButton.addEventListener("click", function() 
+            {
+                imgInput.click();
+            });
+            imgInput.addEventListener("change", function()
+            {
+                const file = imgInput.files[0];
+                if(file)
+                {
+                    console.log(file.name);
+                    const reader = new FileReader();
+
+                    reader.onload = function(e)
+                    {
+                        profileImg.src = e.target.result;
+                    }
+
+                    reader.readAsDataURL(file);
+                }
+            });
+            removeButton.addEventListener("click", function()
+            {
+                profileImg.src = "";
+            });
+
             function deleteAccount()
             {
                 // to server
@@ -214,7 +238,7 @@
             {
                 let tags = $(`#tags`);
                 let addBtn = tags.find(".custom-button");
-                let input_html = `<div id="taginput"><input class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
+                let input_html = `<div id="taginput"><input id="schTag" list="tag-list" class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
                 
                 addBtn.replaceWith(input_html);
             }
