@@ -16,7 +16,7 @@
 <body>
     <header>
         <div class="logo">
-            <a href="#"><span class="word jungle">Jungle</span> <span class="word meeting">Meeting</span></a>
+            <a href="{{url_for('mainpage')}}"><span class="word jungle">Jungle</span> <span class="word meeting">Meeting</span></a>
         </div>
         {% if not currentUser %}
         <div class="sign_btn">
@@ -26,7 +26,7 @@
         {% else %}
         <div class="Info">
             <div class="pr-photo">
-                <img src="{{ url_for('static', filename='images/IMG_0224.jpg') }}" alt="" srcset="">
+                <img src="{{ currentUser.imgPath }}" alt="" srcset="">
             </div>
             <div class="pr-name">
                 {{userName}}

@@ -90,7 +90,7 @@
         class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
         <div class="card-image">
             <figure class="image">
-                {% if imagPath %}
+                {% if imgPath %}
                     <img id="profile-img" class="profile-img-dh" src="{{imgPath}}" alt="테스트 프로필 이미지"style="border: 3px solid #AEE996; ">
                 {% else %}
                     <img id="profile-img" class="profile-img-dh" src="{{ url_for('static', filename='images/IMG_0224.jpg')}}" alt="테스트 프로필 이미지"style="border: 3px solid #AEE996; ">
