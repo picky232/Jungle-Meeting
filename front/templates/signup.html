@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jungle Meeting | signup</title>
+
+<style>
+        /* 전체 화면 */
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #333;
+        }
+
+        /* 박스 */
+        .signup-container {
+            width: 500px;
+            background-color: #f9f9f9;
+            padding: 30px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .title h1 {
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+            color: #0c0b14;
+        }
+
+        /* 입력 영역 */
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-row label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-row input,
+        .form-row select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        /* 버튼 */
+        .signup-container button {
+            padding: 12px;
+            background-color: #4DA359;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .signup-container button:hover {
+            background-color: #4DA359;
+        }
+
+</style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    <div class="signup-container">
+        <div class="title">
+            <h1>회원가입</h1>
+        </div>
+
+        <div class="form-row">
+            <label for="userId">ID</label>
+            <input type="text" id="userId" placeholder="ID를 입력하세요." />
+            <button type="button" id="checkIdBtn">중복확인</button>
+            <span id="idCheckMsg"></span> 
+        </div>
+
+        <script>
+            let idChecked = false;    
+            let idAvailable = false;    
+
+            $(document).ready(function() { 
+
+                $("#checkIdBtn").on("click", function() {      
+                    const userId = $.trim($("#userId").val());  
+
+                    if (userId === "") {                        
+                        $("#idCheckMsg").text("ID를 입력하세요.")  
+                                        .css("color", "red");     
+                        idChecked = false;                  
+                        return;                               
+                    }
+
+                    $.ajax({                           
+                        url: "/checkUserId",                  
+                        type: "POST",                        
+                        data: { userId: userId },            
+                        success: function(res) {             
+                            if (res.exists) {            
+                                $("#idCheckMsg").text("이미 존재하는 ID입니다.")
+                                                .css("color", "red");         
+                                idChecked = true;           
+                                idAvailable = false;         
+                            } else {                            
+                                $("#idCheckMsg").text("사용 가능한 ID입니다.")
+                                                .css("color", "blue");      
+                                idChecked = true;               
+                                idAvailable = true;             
+                            }
+                        },
+                        error: function() {                       
+                            alert("서버 오류가 발생했습니다.");
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+        <div class="form-row">
+            <label for="userName">이름</label>
+            <input type="text" id="userName" placeholder="이름을 입력하세요." />
+        </div>
+
+        <div class="form-row">
+            <label for="sel1">정글랩</label>
+            <select id="sel1">
+                <option value="">정글랩을 선택해주세요</option>
+                <option>SW-AI Lap</option>
+                <option>Game Lap</option>
+                <option>Game Tech Lap</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="sel2">기수</label>
+            <select id="sel2" class="scroll-select" >
+                <option value="">기수를 선택해주세요</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="userNumber">번호</label>
+            <input type="number" id="userNumber" placeholder="번호를 입력하세요." min="1" />
+        </div>
+
+        <div class="form-row">
+            <label for="userPw">PW</label>
+            <input type="password" id="userPw" placeholder="Password를 입력하세요." />
+        </div>
+
+        <div class="form-row">
+            <label for="userPwCheck">PW 확인</label>
+            <input type="password" id="userPwCheck" placeholder="다시 한번 입력하세요." />
+        </div>
+
+        <div class="form-row">
+            <button id="signupBtn">회원등록</button>
+        </div>
+    </div>
+
+    <script>
+         $("#signupBtn").on("click", function(event) {        
+            const userId      = $.trim($("#userId").val());      
+            const userName    = $.trim($("#userName").val());    
+            const sel1        = $("#sel1").val();                
+            const sel2        = $("#sel2").val();                
+            const userNumber  = $.trim($("#userNumber").val());  
+            const userPw      = $.trim($("#userPw").val());      
+            const userPwCheck = $.trim($("#userPwCheck").val()); 
+
+            if (userId === "") {                       
+                alert("ID를 입력해주세요.");
+                event.preventDefault();
+                return;
+            }
+            if (!idChecked) {                          
+                alert("ID 중복 확인을 해주세요.");
+                event.preventDefault();
+                return;
+            }
+            if (!idAvailable) {                         
+                alert("이미 존재하는 ID입니다. 다른 ID를 입력해주세요.");
+                event.preventDefault();
+                return;
+            }
+            
+            if (userName === "") {                       
+                alert("이름을 입력해주세요.");
+                event.preventDefault();
+            } else if (sel1 === "") {                    
+                alert("정글랩을 선택해주세요.");
+                event.preventDefault();
+            } else if (sel2 === "") {                   
+                alert("기수를 선택해주세요.");
+                event.preventDefault();
+            } else if (userNumber === "") {             
+                alert("번호를 입력해주세요.");
+                event.preventDefault();
+            } else if (userPw === "") {           
+                alert("PW를 입력해주세요.");
+                event.preventDefault();
+            } else if (userPwCheck === "") {            
+                alert("재입력 PW를 입력해주세요.");
+                event.preventDefault();
+            } else if (userPw !== userPwCheck) {       
+                alert("재확인용 비밀번호가 일치하지 않습니다.");
+                event.preventDefault();
+                
+            } else {
+                $.ajax({                               
+                    url: "/signup",                  
+                    type: "POST",                    
+                    data: {                          
+                        userId, userName, sel1, sel2, userNumber, userPw
+                    },
+                    success: function() {              
+                        alert("회원가입이 완료되었습니다.");
+                        location.href = "/login";       
+                    },
+                    error: function() {                 
+                        alert("회원가입 중 오류가 발생했습니다.");
+                    }
+                });
+            }
+
+        if (userId === "") {
+            alert("ID를 입력해주세요.");
+            event.preventDefault();
+        } else if (userName === "") {
+            alert("이름을 입력해주세요.");
+            event.preventDefault();
+        } else if (sel1 === "") {
+            alert("정글랩을 선택해주세요.");
+            event.preventDefault();
+        } else if (sel2 === "") {
+            alert("기수를 선택해주세요.");
+            event.preventDefault();
+        } else if (userNumber === "") {
+            alert("번호를 입력해주세요.");
+            event.preventDefault();
+        } else if (userPw === "") {
+            alert("PW를 입력해주세요.");
+            event.preventDefault();
+        } else if (userPwCheck === "") {
+            alert("재입력 PW를 입력해주세요.");
+            event.preventDefault();
+        } else if (userPw !== userPwCheck) {
+            alert("재확인용 비밀번호가 일치하지 않습니다.");
+            event.preventDefault();
+        } else {
+            alert("회원가입이 완료되었습니다.");
+            location.href = "/login"; // 로그인 페이지로 이동
+        }
+
+        });
+</script>
+
+
+</body>
+</html>

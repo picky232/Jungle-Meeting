@@ -13,8 +13,8 @@ def mainpage():
     return render_template('main.html')
 
 # 로그인 페이지
-@app.route('/login', methods=['POST'])
-def logIn():
+@app.route('/login', methods=['GET', 'POST'])
+def signUp():
     return render_template('')
 
 # 회원가입페이지
