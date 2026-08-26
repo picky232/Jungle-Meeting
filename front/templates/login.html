@@ -127,42 +127,80 @@
 
     <!-- ID -->
     <div class="form-row">
-      <label for="userId">ID</label>
-      <input type="text" id="userId" name="userId" placeholder="ID를 입력하세요.">
+      <label for="id">ID</label>
+      <input type="text" id="id" name="id" placeholder="ID를 입력하세요.">
     </div>
 
     <!-- PW -->
     <div class="form-row">
-      <label for="userPw">PW</label>
-      <input type="password" id="userPw" name="userPw" placeholder="Password를 입력하세요.">
+      <label for="pw">PW</label>
+      <input type="password" id="pw" name="pw" placeholder="Password를 입력하세요.">
     </div>
 
     <!-- 경고 메시지 -->
     <div id="warning" class="warning"></div>
 
     <!-- 로그인 버튼 -->
-    <button id="loginBtn" class="login" >로그인</button>
+    <button id="loginbtn" class="login" >로그인</button>
+    <script>
+      // 문서가 준비되면 실행
+        $(document).ready(function() {
+          // 로그인 버튼 클릭 시
+          $("#loginbtn").on("click", function(event) {
+            const id = $.trim($("#id").val());   
+            const pw = $.trim($("#pw").val());  
+            const warning = $("#warning");             
+
+            // ID, PW 공백
+            if (id === "" || pw === "") {
+              warning.text("ID와 PW를 입력해주세요.");  
+              return;                                   
+            }
+
+            // 서버 로그인 요청
+            $.ajax({
+              url: "/login",                  
+              type: "POST",                            
+              contentType: "application/json",       
+              data: { give_id: id, give_pw: pw },
+
+              success: function(response) {          
+                if (response.success) {
+                  // ✅ 
+                  window.location.href = "/main";
+                } else {
+                  // ❌
+                  warning.text("ID 또는 PW가 올바르지 않습니다.");
+                }
+              },
+
+              error: function() {                       
+                warning.text("서버 오류가 발생했습니다.");
+              }
+            });
+          });
+        });
+    </script>
     
     <!-- 회원가입 버튼 -->
     <button class="signup" onclick="location.href='/signup'">회원가입 하기</button>
-
   </div>
 
   <script>
    $(document).ready(function() {
-    $("#loginBtn").on("click", function(event) {
-      const userId = $.trim($("#userId").val());
-      const userPw = $.trim($("#userPw").val());
+    $("#loginbtn").on("click", function(event) {
+      const id = $.trim($("#id").val());
+      const pw = $.trim($("#pw").val());
       const warning = $("#warning");
 
-      if (userId === "" && userPw === "") {
-        warning.text("ID와 PW를 입력해주세요!");
+      if (id === "" && pw === "") {
+        warning.text("ID와 PW를 입력해주세요.");
         event.preventDefault();
-      } else if (userId === "") {
-        warning.text("ID를 입력해주세요!");
+      } else if (id === "") {
+        warning.text("ID를 입력해주세요.");
         event.preventDefault();
-      } else if (userPw === "") {
-        warning.text("PW를 입력해주세요!");
+      } else if (pw === "") {
+        warning.text("PW를 입력해주세요.");
         event.preventDefault();
       } else {
         warning.text(""); // 정상 입력 시 경고 제거
