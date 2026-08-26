@@ -80,6 +80,8 @@
         }
 
 </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -91,8 +93,51 @@
         <div class="form-row">
             <label for="userId">ID</label>
             <input type="text" id="userId" placeholder="ID를 입력하세요." />
-            <button type="button">중복확인</button>
+            <button type="button" id="checkIdBtn">중복확인</button>
+            <span id="idCheckMsg"></span> 
         </div>
+
+        <script>
+            let idChecked = false;    
+            let idAvailable = false;    
+
+            $(document).ready(function() { 
+
+                $("#checkIdBtn").on("click", function() {      
+                    const userId = $.trim($("#userId").val());  
+
+                    if (userId === "") {                        
+                        $("#idCheckMsg").text("ID를 입력하세요.")  
+                                        .css("color", "red");     
+                        idChecked = false;                  
+                        return;                               
+                    }
+
+                    $.ajax({                           
+                        url: "/checkUserId",                  
+                        type: "POST",                        
+                        data: { userId: userId },            
+                        success: function(res) {             
+                            if (res.exists) {            
+                                $("#idCheckMsg").text("이미 존재하는 ID입니다.")
+                                                .css("color", "red");         
+                                idChecked = true;           
+                                idAvailable = false;         
+                            } else {                            
+                                $("#idCheckMsg").text("사용 가능한 ID입니다.")
+                                                .css("color", "blue");      
+                                idChecked = true;               
+                                idAvailable = true;             
+                            }
+                        },
+                        error: function() {                       
+                            alert("서버 오류가 발생했습니다.");
+                        }
+                    });
+                });
+            });
+        </script>
+
 
         <div class="form-row">
             <label for="userName">이름</label>
@@ -153,14 +198,69 @@
     </div>
 
     <script>
-        document.getElementById("signupBtn").addEventListener("click", function(event) {
-        const userId        = document.getElementById("userId").value.trim();
-        const userName      = document.getElementById("userName").value.trim();
-        const sel1          = document.getElementById("sel1").value;
-        const sel2          = document.getElementById("sel2").value;
-        const userNumber    = document.getElementById("userNumber").value.trim();
-        const userPw        = document.getElementById("userPw").value.trim();
-        const userPwCheck   = document.getElementById("userPwCheck").value.trim();
+         $("#signupBtn").on("click", function(event) {        
+            const userId      = $.trim($("#userId").val());      
+            const userName    = $.trim($("#userName").val());    
+            const sel1        = $("#sel1").val();                
+            const sel2        = $("#sel2").val();                
+            const userNumber  = $.trim($("#userNumber").val());  
+            const userPw      = $.trim($("#userPw").val());      
+            const userPwCheck = $.trim($("#userPwCheck").val()); 
+
+            if (userId === "") {                       
+                alert("ID를 입력해주세요.");
+                event.preventDefault();
+                return;
+            }
+            if (!idChecked) {                          
+                alert("ID 중복 확인을 해주세요.");
+                event.preventDefault();
+                return;
+            }
+            if (!idAvailable) {                         
+                alert("이미 존재하는 ID입니다. 다른 ID를 입력해주세요.");
+                event.preventDefault();
+                return;
+            }
+            
+            if (userName === "") {                       
+                alert("이름을 입력해주세요.");
+                event.preventDefault();
+            } else if (sel1 === "") {                    
+                alert("정글랩을 선택해주세요.");
+                event.preventDefault();
+            } else if (sel2 === "") {                   
+                alert("기수를 선택해주세요.");
+                event.preventDefault();
+            } else if (userNumber === "") {             
+                alert("번호를 입력해주세요.");
+                event.preventDefault();
+            } else if (userPw === "") {           
+                alert("PW를 입력해주세요.");
+                event.preventDefault();
+            } else if (userPwCheck === "") {            
+                alert("재입력 PW를 입력해주세요.");
+                event.preventDefault();
+            } else if (userPw !== userPwCheck) {       
+                alert("재확인용 비밀번호가 일치하지 않습니다.");
+                event.preventDefault();
+                
+            } else {
+                $.ajax({                               
+                    url: "/signup",                  
+                    type: "POST",                    
+                    data: {                          
+                        userId, userName, sel1, sel2, userNumber, userPw
+                    },
+                    success: function() {              
+                        alert("회원가입이 완료되었습니다.");
+                        location.href = "/login";       
+                    },
+                    error: function() {                 
+                        alert("회원가입 중 오류가 발생했습니다.");
+                    }
+                });
+            }
 
         if (userId === "") {
             alert("ID를 입력해주세요.");
@@ -188,10 +288,12 @@
             event.preventDefault();
         } else {
             alert("회원가입이 완료되었습니다.");
-            location.href = "log-in.html"; // 로그인 페이지로 이동
+            location.href = "/login"; // 로그인 페이지로 이동
         }
+
         });
-    </script>
+</script>
+
 
 </body>
 </html>
