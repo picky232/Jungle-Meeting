@@ -17,6 +17,7 @@
         height: 200px !important;
         object-fit: cover;
         margin: 0 auto;
+        border-radius: 10px;
     }
 
     .profile {
@@ -74,6 +75,7 @@
         margin-right: 10px;
         margin-bottom: 10px;
         background-color: #6CBA61;
+        border-radius: 10px;
     }
 
     .profile-info-fix-btn {
@@ -88,7 +90,11 @@
         class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
         <div class="card-image">
             <figure class="image">
-                <img class="profile-img-dh" src="{{imgPath}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
+                {% if imagPath %}
+                    <img id="profile-img" class="profile-img-dh" src="{{imgPath}}" alt="테스트 프로필 이미지"style="border: 3px solid #AEE996; ">
+                {% else %}
+                    <img id="profile-img" class="profile-img-dh" src="{{ url_for('static', filename='images/IMG_0224.jpg')}}" alt="테스트 프로필 이미지"style="border: 3px solid #AEE996; ">
+                {% endif %}
             </figure>
         </div>
         <div class="card-content">
@@ -108,7 +114,7 @@
 
     <div class="column card profile">
         <div class="card profile-desc">
-            {{desc}}
+            {{desc | safe}}
         </div>
         <div class="card profile-tag-list">
             <div class="columns is-multiline">

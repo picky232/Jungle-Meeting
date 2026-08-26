@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,11 +18,11 @@
         <div class="logo">
             <a href="#"><span class="word jungle">Jungle</span> <span class="word meeting">Meeting</span></a>
         </div>
-        {{ if access_token== }}
-        <!-- <div class="sign_btn">
+        {# {% if access_token== %}
+        <div class="sign_btn">
             <button class="button is-skyblue">로그인</button>
             <button class="button is-skyblue">회원가입</button>
-        </div> -->
+        </div> #}
         <div class="Info">
             <div class="pr-photo">
                 <img src="{{ url_for('static', filename='images/IMG_0224.jpg') }}" alt="" srcset="">
