@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
     <title>{% block title %}Jungle Meeting{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    {% block head %}
+    {% endblock %}
+
 </head>
 <body>
     <header>
@@ -17,7 +23,7 @@
             <button class="button is-skyblue">로그인</button>
             <button class="button is-skyblue">회원가입</button>
         </div> -->
-        <div class="userInfo">
+        <div class="Info">
             <div class="pr-photo">
                 <img src="{{ url_for('static', filename='images/IMG_0224.jpg') }}" alt="" srcset="">
             </div>
