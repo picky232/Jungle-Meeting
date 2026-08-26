@@ -14,16 +14,13 @@ def mainpage():
 
 # 로그인 페이지
 @app.route('/login', methods=['GET', 'POST'])
-def logIn():
-    if request.method == 'POST':
-        return "로그인 처리 완료"
-    else:
-        return render_template('login.html')
+def signUp():
+    return render_template('')
 
 # 회원가입페이지
 @app.route('/signup', methods=['POST'])
 def signUp():
-    return render_template('signup.html')
+    return render_template('')
 
 # 프로필확인 페이지 - 사용자 -> 다른사용자 프로필 확인
 @app.route('/profile', methods=['GET'])
