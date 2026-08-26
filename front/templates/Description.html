@@ -52,18 +52,18 @@
                 width: calc(100% - 60px);
                 height: calc(100dvh - 60px - 10dvh);
             }
-            .profile-user-info{
+            .profile--info{
                 display: flex;
                 flex-direction: column;
                 align-items: start;
                 max-width: 20%;
             }
-            .profile-user-info-text{
+            .profile--info-text{
                 font-size: 24px;
                 font-weight: 500;
                 color:#000000;
             }
-            .profile-user-id-text{
+            .profile--id-text{
                 font-size: 16px;
                 font-weight: 300;
                 color: gray;
@@ -110,7 +110,7 @@
         </header>
 
     <div class="columns">
-        <div class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
+        <div class="column is-narrow card profile profile--info is-flex is-justify-content-center is-align-items-center">
             <div class="card-image">
                 <figure class="image">
                     <img class="profile-img-dh" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPndwZqhd5djExStpY0ZnjzNpC6JV4OpUvYzNIsAZ8Gg&s" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
@@ -120,10 +120,10 @@
                 <div class="media">
                     <div class="media-content">
                         <hr class="profile-line"> <br>
-                        <div class="profile-user-info-text has-text-centered">{{name}}</div>
-                        <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
-                        <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
-                        <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
+                        <div class="profile--info-text has-text-centered">{{name}}</div>
+                        <div class="profile--id-text has-text-centered">{{id}}</div> <br>
+                        <div class="profile--info-text has-text-centered">{{lab}}</div> <br>
+                        <div class="profile--info-text has-text-centered">{{gen}}-{{num}}</div> <br>
                         <div class="button profile-info-fix-btn" onclick="goFixInfoPage()" style="background-color: #AEE996;">정보 수정</div>
                     </div>
                 </div>

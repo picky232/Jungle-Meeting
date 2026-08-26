@@ -57,7 +57,7 @@ header {
 }
 
 /* 로그인 후 회원사진 + 이름 + 드롭다운메뉴 */
-.userInfo{
+.Info{
     grid-column: 3;
     justify-self: end;
     white-space: nowrap;
@@ -253,7 +253,7 @@ header {
     color: var(--text-sub);
 }
 
-.yearNum {
+.yearnum {
     font-size: 1.1em;
     font-weight: 600;
     color: var(--text-sub);
