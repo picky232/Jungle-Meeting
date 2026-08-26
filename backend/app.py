@@ -15,12 +15,12 @@ def mainpage():
 # 로그인 페이지
 @app.route('/login', methods=['POST'])
 def logIn():
-    return render_template('')
+    return render_template('login.html')
 
 # 회원가입페이지
 @app.route('/signup', methods=['POST'])
 def signUp():
-    return render_template('')
+    return render_template('signup.html')
 
 # 프로필확인 페이지 - 사용자 -> 다른사용자 프로필 확인
 @app.route('/profile', methods=['GET'])
