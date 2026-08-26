@@ -1,290 +1,353 @@
 {% extends "header.html" %}
 
-<!DOCTYPE html>
-<html lang="ko">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block head %}
+<style>
+    * {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    .profile-img-dh {
+        width: 200px !important;
+        height: 200px !important;
+        object-fit: cover;
+        margin: 0 auto;
+    }
 
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    .profile {
+        margin: 30px;
+        width: calc(100% - 60px);
+        height: calc(100dvh - 60px - 10dvh);
+    }
 
-        <style>
-            *{
-                font-family: 'Noto Sans KR', sans-serif;
-            }
-            .profile-img-dh{
-                width: 200px !important;
-                height: 200px !important;
-                object-fit: cover;
-                margin: 0 auto;
-            } 
-            .profile{
-                margin: 30px;
-                width: calc(100% - 60px);
-                height: calc(100dvh - 60px - 10dvh);
-            }
-            .profile--info{
-                display: flex;
-                flex-direction: column;
-                align-items: start;
-                max-width: 20%;
-            }
-            .profile--info-text{
-                font-size: 24px;
-                font-weight: 500;
-                color:#000000;
-            }
-            .profile-line{
-                width: 200px;
-                margin: 0 auto;
-                margin-top: 10px;
-                margin-bottom: 10px;
-                background-color:#000000;
-            }
-            .profile-desc{
-                margin: 1%;
-                padding: 1%;
-                min-height: 90%;
-                min-width: 97%;
-                overflow-y: auto;
-                text-wrap-mode: wrap;
-            }
-            .profile-tag-list{
-                margin: 1%;
-                padding: 2%;
-                min-height: 10%;
-                max-height: 15%;
-                overflow-y: auto;
-            }
-            .profile-tag{
-                flex: 0 0 auto;
-                padding: 5px 10px;
-                margin-right: 10px;
-                margin-bottom: 10px;
-                background-color: gray;
-            }
-            .profile-info-fix-btn{
-                min-width: 100%;
-            }
-            .profile-info-input-field{
-                margin: 5px;
-                width: 50%;
-            }
-            .profile-info-input-field-2{
-                margin: 5px;
-            }
-           .custom-select {
-                margin: 5px;
-            }
-            .profile-id-button{
-                margin: 5px;
-            }
-            .custom-button{
-                background-color: gray;
-            }
-            .profile-fix-desc{
-                height: 50%;
-            }
-            .left {
-              justify-content: flex-start;
-            }
-            .center {
-              justify-content: center;
-            }
-            .right {
-              justify-content: flex-end;
-            }
-            .container{
-                display: flex;
-            }
-            .profile-default-info{
-                display: flex;
-                flex-direction: row;
-                max-height: 10%;
-            }
-            .select-button {
-                background-color: #AEE996;
-                color: black;
-            }
-            .select-button:hover {
-                background-color: #4DA359;
-            }
-            .file-button{
-                cursor: pointer;
-                width: 50%;
-            }
-            .sch-tag{
-                font-size: 2em;
-                background-color: black;
-                width: 200px;
-                height: 50px;
-            }
-        </style>
-    </head>
+    .profile-user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        max-width: 20%;
+    }
 
-    <body>
-    <div class="columns">
-        <div class="column is-narrow card profile profile--info is-flex is-justify-content-center is-align-items-center">
-            <div class="card-image">
-                <figure class="image">
-                    <img id="profile-img" class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <input type="file" id="img-input" class="file-input" accept="image/*" hidden>
-                        <div class="is-flex">
-                            <button class="select-button file-button" id="img-input-button">이미지 업로드</button>
-                            <button class="select-button file-button" id="img-remove-button" style="background-color: #ea3030;" >이미지 삭제</button>
-                        </div>
-                        <hr class="profile-line"> <br>
-<<<<<<< HEAD
-                        <div class="profile--info-text has-text-centered" style="">{{name}}</div>
-                        <div class="profile--id-text has-text-centered">{{id}}</div> <br>
-                        <div class="profile--info-text has-text-centered">{{lab}}</div> <br>
-                        <div class="profile--info-text has-text-centered">{{gen}}-{{num}}</div> <br>
-=======
-                        <div class="profile-user-info-text has-text-centered">{{name}}</div>
-                        <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
-                        <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
-                        <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
->>>>>>> d8a0a2906abf42701723d303d7edca7c33c30dc7
-                        <div class="button profile-info-fix-btn" onclick="deleteAccount()" style="background-color: #AEE996;">회원탈퇴</div>
-                    </div>
-                </div>
-            </div>
+    .profile-user-info-text {
+        font-size: 24px;
+        font-weight: 500;
+        color: #000000;
+    }
+
+    .profile-line {
+        width: 200px;
+        margin: 0 auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #000000;
+    }
+
+    .profile-desc {
+        margin: 1%;
+        margin-top: 0.5%;
+        padding: 1%;
+        min-width: 97%;
+        max-width: 97%;
+        overflow-y: auto;
+        text-wrap-mode: wrap;
+    }
+
+    .profile-tag-list {
+        margin: 1%;
+        padding: 2%;
+        min-height: 10%;
+        max-height: 15%;
+        overflow-y: auto;
+    }
+
+    .profile-tag {
+        flex: 0 0 auto;
+        padding: 5px 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        background-color: gray;
+    }
+
+    .profile-info-fix-btn {
+        min-width: 100%;
+    }
+
+    .profile-info-input-field {
+        margin: 5px;
+        width: 50%;
+    }
+
+    .profile-info-input-field-2 {
+        margin: 5px;
+    }
+
+    .custom-select {
+        margin: 5px;
+    }
+
+    .profile-id-button {
+        margin: 5px;
+    }
+
+    .custom-button {
+        background-color: gray;
+    }
+
+    .profile-fix-desc {
+        display: flex;
+        flex-direction: column;
+        height: 50%;
+    }
+
+    .left {
+        justify-content: flex-start;
+    }
+
+    .center {
+        justify-content: center;
+    }
+
+    .right {
+        justify-content: flex-end;
+    }
+
+    .container {
+        display: flex;
+    }
+
+    .profile-default-info {
+        display: flex;
+        flex-direction: row;
+        max-height: 10%;
+    }
+
+    .select-button {
+        background-color: #AEE996;
+        color: black;
+    }
+
+    .select-button:hover {
+        background-color: #4DA359;
+    }
+
+    .file-button {
+        cursor: pointer;
+        width: 50%;
+    }
+
+    .sch-tag {
+        font-size: 2em;
+        background-color: black;
+        width: 200px;
+        height: 50px;
+    }
+</style>
+ 
+<script>
+    let canId = false;
+    let checkedId = false;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const imgInput = document.getElementById("img-input");
+        const imgInputButton = document.getElementById("img-input-button");
+        const removeButton = document.getElementById("img-remove-button");
+        const profileImg = document.getElementById("profile-img");
+
+        // db에서 받아왔다 치고
+        const testTags = ["게임", "게임2", "게임3", "고양이", "개", "개발", "SW", "AI"];
+
+        imgInputButton.addEventListener("click", function () {
+            imgInput.click();
+        });
+        imgInput.addEventListener("change", function () {
+            const file = imgInput.files[0];
+            if (file) {
+                console.log(file.name);
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    profileImg.src = e.target.result;
+                }
+
+                reader.readAsDataURL(file);
+            }
+        });
+        removeButton.addEventListener("click", function () {
+            profileImg.src = "";
+        });
+    });
+
+    function deleteAccount() {
+        // to server
+    }
+    function onClickAddTagBtn() {
+        let tags = $(`#tags`);
+        let addBtn = tags.find(".custom-button");
+        let input_html = `<div id="taginput"><input id="schTag" list="tag-list" class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
+
+        addBtn.replaceWith(input_html);
+    }
+    function addTag() {
+        let taginput = $(`#taginput`);
+        let temp = taginput.find(".tag-name-input");
+        let tagname = temp.val();
+
+        if (!tagname)
+            return;
+
+        let tag_html = `<div class="column profile-tag" style="background-color: #6CBA61;">${tagname}</div>`;
+        $("#tags").append(tag_html);
+
+        let input_html = `<button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>`;
+        taginput.replaceWith(input_html);
+    }
+    function save() {
+        // to server
+        if (!checkedId) {
+            alert("아이디 중복 확인 해주세요.");
+            return;
+        }
+        else if (!canId) {
+            alert("중복된 아이디 입니다. 변경해주세요.");
+            return;
+        }
+
+        const profileImg = document.getElementById("profile-img");
+        const name = document.getElementById("name-field");
+        const id = document.getElementById("id-field");
+        const lab = document.getElementById("lab-field");
+        const gen = document.getElementById("gen-field");
+        const num = document.getElementById("num-field");
+        const desc = document.getElementById("desc-field");
+        const tags = document.getElementById("tags").children;
+
+        let tagTexts = [];
+        for (let i = 0; i < tags.length; ++i) {
+            if (tags[i]) {
+                tagTexts.push(tags[i].textContent);
+            }
+        }
+        const data = {
+            name: name.value,
+            id: id.value,
+            lab: lab.value,
+            gen: gen.value,
+            num: num.value,
+            desc: desc.value,
+            tags: tagTexts
+        };
+
+        $.ajax({
+            type: "PATCH",
+            url: `/userInfoPatch`,
+            data: JSON.stringify(data),
+            contentType: "application/json",
+
+            success: function (response) {
+                alert("저장 성공!");
+                window.location.href = `{{url_for('descriptionPage') }}`;
+            },
+            error: function () {
+                alert("저장 실패!");
+            }
+        })
+    }
+    function backspace() {
+        history.back();
+    }
+    function checkId() {
+        const id = document.getElementById("id-field").value;
+
+        // to server
+        $.ajax({
+            type: "GET",
+            url: `/checkId/${id}`,
+            success: function (response) {
+                if (response["result"] == "success") {
+                    alert("사용할 수 있는 아이디입니다.");
+                    canId = true;
+                    checkedId = true;
+                }
+            },
+            error: function () {
+                alert("사용할 수 없는 아이디입니다.");
+                canId = false;
+                checkedId = true;
+            },
+        });
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="columns">
+    <div
+        class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
+        <div class="card-image">
+            <figure class="image">
+                <img id="profile-img" class="profile-img-dh" src="{{imgPath}}" alt="테스트 프로필 이미지"
+                    style="border: 3px solid #AEE996; ">
+            </figure>
         </div>
-
-        <div class="column card profile">
-            <div class="profile-default-info">
-                <input class="profile-info-input-field" placeholder="이름 변경" type="text"/>
-                <input class="profile-info-input-field" placeholder="아이디 변경" type="text"/>
-                <button class="profile-id-button" style="background-color: #AEE996;" onclick="id()">중복 확인</button>
-                <select class="custom-select">
-                    <option>랩 변경</option>
-                    <option>SW-AI</option>
-                    <option>GAME LAB</option>
-                    <option>GAME TECH LAB</option>
-                </select>
-                <input class="profile-info-input-field-2" placeholder="기수 변경" type="text"/>
-                <input class="profile-info-input-field-2" placeholder="번호 변경" type="text"/>
-            </div>
-            <div class="profile-fix-desc">
-                <span class="is-size-4" style="padding-left: 1%; color:black;">내 정보 변경</span>
-                <textarea class="text-box profile-desc">{{desc}}</textarea>
-            </div>
-            <span class="is-size-4" style="padding-left: 1%; color:black;">관심사 태그</span>
-            <div class="card profile-tag-list">
-                <div class="columns is-multiline" id="tags">
-<<<<<<< HEAD
-                    <button class="button custom-button" onclick="onClickAddTagbtn()" style="background-color: #6CBA61;">+</button>
-=======
-                    <button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>
-                    <datalist id="tag-list">
-                        <option value="게임">
-                        <option value="게임2">
-                        <option value="게임3">
-                        <option value="게임4">
-                        <option value="게임5">
-                        <option value="게임6">
-                        <option value="고양이2">
-                    </datalist>
-                    {% for tag in tags %}
-                        <div class="column profile-tag" style="background-color: #6CBA61;">{{tag.name}}</div> 
-                    {% endfor %}
->>>>>>> d8a0a2906abf42701723d303d7edca7c33c30dc7
+        <div class="card-content">
+            <div class="media">
+                <div class="media-content">
+                    <input type="file" id="img-input" class="file-input" accept="image/*" hidden>
+                    <div class="is-flex">
+                        <button class="select-button file-button" id="img-input-button">이미지 업로드</button>
+                        <button class="select-button file-button" id="img-remove-button"
+                            style="background-color: #ea3030;">이미지 삭제</button>
+                    </div>
+                    <hr class="profile-line"> <br>
+                    <div class="profile-user-info-text has-text-centered">{{name}}</div>
+                    <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
+                    <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
+                    <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
+                    <div class="button profile-info-fix-btn" onclick="deleteAccount()"
+                        style="background-color: #AEE996; color: #000000;">회원탈퇴</div>
                 </div>
-            </div>
-            <div class="container right">
-                <button class="button" onclick="save()" style="background-color: #4DA359;">저장</button>
-                <button class="button" onclick="backspace()" style="background-color: #da0000;">취소</button>
             </div>
         </div>
     </div>
 
-    
-        <script>
-            const imgInput = document.getElementById("img-input");
-            const imgInputButton = document.getElementById("img-input-button");
-            const removeButton = document.getElementById("img-remove-button");
-            const profileImg = document.getElementById("profile-img");
+    <div class="column card profile">
+        <div class="profile-default-info">
+            <input id="name-field" class="profile-info-input-field" placeholder="이름 변경" type="text" />
+            <input id="id-field" class="profile-info-input-field" placeholder="아이디 변경" type="text" />
+            <button class="profile-id-button" style="background-color: #AEE996;" onclick="checkId()">중복 확인</button>
+            <select id="lab-field" class="custom-select">
+                <option>랩 변경</option>
+                <option>SW-AI</option>
+                <option>GAME LAB</option>
+                <option>GAME TECH LAB</option>
+            </select>
+            <input id="gen-field" class="profile-info-input-field-2" placeholder="기수 변경" type="text" />
+            <input id="num-field" class="profile-info-input-field-2" placeholder="번호 변경" type="text" />
+        </div>
+        <div class="profile-fix-desc columns">
+            <span class="is-size-4 column is-narrow"
+                style="padding: 0; padding-left: 1%; margin-top: 2%; color:black;">내 정보 변경</span>
+            <textarea id="desc-field" class="text-box profile-desc column">{{desc}}</textarea>
+        </div>
+        <span class="is-size-4" style="padding-left: 1%; color:black;">관심사 태그</span>
+        <div class="card profile-tag-list">
+            <div class="columns is-multiline" id="tags">
+                <button class="button custom-button" onclick="onClickAddTagBtn()"
+                    style="background-color: #6CBA61; color: #000000;">+</button>
+                <datalist id="tag-list">
+                    {% for tag in dbTags %}
+                    <option value="{{tag.name}}">
+                        {% endfor %}
+                </datalist>
+                {% for tag in tags %}
+                <div class="column profile-tag" style="background-color: #6CBA61;">{{tag.name}}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="container right">
+            <button class="button" onclick="save()" style="background-color: #4DA359; color: #000000;">저장</button>
+            <button class="button" onclick="backspace()" style="background-color: #da0000; color: #000;">취소</button>
+        </div>
+    </div>
+</div>
 
-            // db에서 받아왔다 치고
-            const testTags = ["게임", "게임2", "게임3", "고양이", "개", "개발", "SW", "AI"];
 
-            imgInputButton.addEventListener("click", function() 
-            {
-                imgInput.click();
-            });
-            imgInput.addEventListener("change", function()
-            {
-                const file = imgInput.files[0];
-                if(file)
-                {
-                    console.log(file.name);
-                    const reader = new FileReader();
-
-                    reader.onload = function(e)
-                    {
-                        profileImg.src = e.target.result;
-                    }
-
-                    reader.readAsDataURL(file);
-                }
-            });
-            removeButton.addEventListener("click", function()
-            {
-                profileImg.src = "";
-            });
-
-            function deleteAccount()
-            {
-                // to server
-            }
-            function onClickAddTagbtn()
-            {
-                let tags = $(`#tags`);
-<<<<<<< HEAD
-                let addbtn = tags.find(".custom-button");
-                let input_html = `<div id="taginput"><input class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
-=======
-                let addBtn = tags.find(".custom-button");
-                let input_html = `<div id="taginput"><input id="schTag" list="tag-list" class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
->>>>>>> d8a0a2906abf42701723d303d7edca7c33c30dc7
-                
-                addbtn.replaceWith(input_html);
-            }
-            function addTag()
-            {
-                let taginput = $(`#taginput`);
-                let temp = taginput.find(".tag-name-input");
-                let tagname = temp.val();
-
-                if(!tagname)
-                    return;
-
-                let tag_html = `<div class="column profile-tag" style="background-color: #6CBA61;">${tagname}</div>`;
-                $("#tags").append(tag_html);
-                
-                let input_html = `<button class="button custom-button" onclick="onClickAddTagbtn()" style="background-color: #6CBA61;">+</button>`;
-                taginput.replaceWith(input_html);
-            }
-            function save()
-            {
-                // to server
-            }
-            function backspace()
-            {
-                history.back();
-            }
-            function id()
-            {
-                // to server
-            }
-        </script>
-    </body>
-</html>
+{% endblock %}

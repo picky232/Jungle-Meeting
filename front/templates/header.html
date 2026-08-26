@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
     <title>{% block title %}Jungle Meeting{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    {% block head %}
+    {% endblock %}
+
 </head>
 <body>
     <header>
