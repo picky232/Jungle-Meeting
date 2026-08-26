@@ -262,7 +262,7 @@
 
         $.ajax({
             type: "PATCH",
-            url: `/userInfoPatch/{{userId}}`,
+            url: `/userInfoPatch`,
             data: formData,
                 processData: false, // formData 사용 시 필수
                 contentType: false, // formData 사용 시 필수
@@ -285,7 +285,7 @@
         // to server
         $.ajax({
             type: "GET",
-            url: `/checkId/{{userId}}/${id}`,
+            url: `/checkId/${id}`,
             success: function (response) {
                 if (response["result"] == "success") {
                     alert("사용할 수 있는 아이디입니다.");

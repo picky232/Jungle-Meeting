@@ -6,6 +6,18 @@ arrow.addEventListener('click', () => {
     arrow.classList.toggle('rotate-180')
 })
 
-function rewriteInfo() {
-    // window.location.href= `{{url_for('profilePage{{id}}')}}`
+function rewriteInfo()
+{
+    $.ajax({
+        type:`GET`,
+        url: `/description`,
+        success: function (response)
+        {
+            if(response["result"] !== "success")
+            {
+                alert("다시 로그인 해주세요.");
+                window.location.href = `/`;
+            }
+        }
+    })
 }
