@@ -13,9 +13,12 @@ def mainpage():
     return render_template('main.html')
 
 # 로그인 페이지
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def logIn():
-    return render_template('login.html')
+    if request.method == 'POST':
+        return "로그인 처리 완료"
+    else:
+        return render_template('login.html')
 
 # 회원가입페이지
 @app.route('/signup', methods=['POST'])
