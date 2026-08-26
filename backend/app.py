@@ -5,6 +5,9 @@ from dotenv import load_dotenv # dotenv 라이브러리 불러오기
 # CA(인증기관) 루트 인증서 묶음 들고있는 패키지
 import certifi
 
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+app.config["JWT_SECRET_KEY"] = 
+
 # .env파일 로드
 load_dotenv()
 
