@@ -26,13 +26,13 @@
                 width: calc(100% - 60px);
                 height: calc(100dvh - 60px - 10dvh);
             }
-            .profile-user-info{
+            .profile--info{
                 display: flex;
                 flex-direction: column;
                 align-items: start;
                 max-width: 20%;
             }
-            .profile-user-info-text{
+            .profile--info-text{
                 font-size: 24px;
                 font-weight: 500;
                 color:#000000;
@@ -127,7 +127,7 @@
 
     <body>
     <div class="columns">
-        <div class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
+        <div class="column is-narrow card profile profile--info is-flex is-justify-content-center is-align-items-center">
             <div class="card-image">
                 <figure class="image">
                     <img id="profile-img" class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
@@ -142,10 +142,17 @@
                             <button class="select-button file-button" id="img-remove-button" style="background-color: #ea3030;" >이미지 삭제</button>
                         </div>
                         <hr class="profile-line"> <br>
+<<<<<<< HEAD
+                        <div class="profile--info-text has-text-centered" style="">{{name}}</div>
+                        <div class="profile--id-text has-text-centered">{{id}}</div> <br>
+                        <div class="profile--info-text has-text-centered">{{lab}}</div> <br>
+                        <div class="profile--info-text has-text-centered">{{gen}}-{{num}}</div> <br>
+=======
                         <div class="profile-user-info-text has-text-centered">{{name}}</div>
                         <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
                         <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
                         <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
+>>>>>>> d8a0a2906abf42701723d303d7edca7c33c30dc7
                         <div class="button profile-info-fix-btn" onclick="deleteAccount()" style="background-color: #AEE996;">회원탈퇴</div>
                     </div>
                 </div>
@@ -173,6 +180,9 @@
             <span class="is-size-4" style="padding-left: 1%; color:black;">관심사 태그</span>
             <div class="card profile-tag-list">
                 <div class="columns is-multiline" id="tags">
+<<<<<<< HEAD
+                    <button class="button custom-button" onclick="onClickAddTagbtn()" style="background-color: #6CBA61;">+</button>
+=======
                     <button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>
                     <datalist id="tag-list">
                         <option value="게임">
@@ -186,6 +196,7 @@
                     {% for tag in tags %}
                         <div class="column profile-tag" style="background-color: #6CBA61;">{{tag.name}}</div> 
                     {% endfor %}
+>>>>>>> d8a0a2906abf42701723d303d7edca7c33c30dc7
                 </div>
             </div>
             <div class="container right">
@@ -234,13 +245,18 @@
             {
                 // to server
             }
-            function onClickAddTagBtn()
+            function onClickAddTagbtn()
             {
                 let tags = $(`#tags`);
+<<<<<<< HEAD
+                let addbtn = tags.find(".custom-button");
+                let input_html = `<div id="taginput"><input class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
+=======
                 let addBtn = tags.find(".custom-button");
                 let input_html = `<div id="taginput"><input id="schTag" list="tag-list" class="input tag-name-input" placeholder="태그 이름 입력" type="text"/> <button class="button" onclick="addTag()" style="background-color: #6CBA61;">추가</button></div>`;
+>>>>>>> d8a0a2906abf42701723d303d7edca7c33c30dc7
                 
-                addBtn.replaceWith(input_html);
+                addbtn.replaceWith(input_html);
             }
             function addTag()
             {
@@ -254,7 +270,7 @@
                 let tag_html = `<div class="column profile-tag" style="background-color: #6CBA61;">${tagname}</div>`;
                 $("#tags").append(tag_html);
                 
-                let input_html = `<button class="button custom-button" onclick="onClickAddTagBtn()" style="background-color: #6CBA61;">+</button>`;
+                let input_html = `<button class="button custom-button" onclick="onClickAddTagbtn()" style="background-color: #6CBA61;">+</button>`;
                 taginput.replaceWith(input_html);
             }
             function save()
