@@ -16,20 +16,20 @@
 <body>
     <header>
         <div class="logo">
-            <a href="#"><span class="word jungle">Jungle</span> <span class="word meeting">Meeting</span></a>
+            <a href="{{url_for('mainpage')}}"><span class="word jungle">Jungle</span> <span class="word meeting">Meeting</span></a>
         </div>
         {% if not currentUser %}
         <div class="sign_btn">
-            <button class="button is-skyblue">로그인</button>
-            <button class="button is-skyblue">회원가입</button>
+            <button class="button is-skyblue" onclick="login()">로그인</button>
+            <button class="button is-skyblue" onclick="signUp()">회원가입</button>
         </div>
         {% else %}
         <div class="Info">
             <div class="pr-photo">
-                <img src="{{ url_for('static', filename='images/IMG_0224.jpg') }}" alt="" srcset="">
+                <img src="{{ currentUser.imgPath }}" alt="" srcset="">
             </div>
             <div class="pr-name">
-                홍길동
+                {{userName}}
             </div>
             <div class="pr-arrow">
                 <div id="arrow-down" style="cursor: pointer; width: 25px; height: 25px; border-radius: 50%;" onclick="openmenu()"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.003 18.626l7.081-7.081L25 13.46l-8.997 8.998-9.003-9 1.917-1.916z"/></svg></div>

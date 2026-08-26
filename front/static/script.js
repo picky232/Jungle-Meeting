@@ -8,16 +8,24 @@ arrow.addEventListener('click', () => {
 
 function rewriteInfo()
 {
+    window.location.href = `/description`;
+}
+
+function login()
+{
+    window.location.href = `/login`;
+}
+
+function signUp()
+{
+    window.location.href = `/signup`;
+}
+
+function logout()
+{
     $.ajax({
-        type:`GET`,
-        url: `/description`,
-        success: function (response)
-        {
-            if(response["result"] !== "success")
-            {
-                alert("다시 로그인 해주세요.");
-                window.location.href = `/`;
-            }
-        }
+        type:'GET',
+        url:'/logout'
     })
+    window.location.href = `/`;
 }
