@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <title>{% block title %}Jungle Meeting{% endblock %}</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
     {% block head %}
@@ -41,6 +41,5 @@
     {% block content %}
     {% endblock %}
 </body>
-<script src="https://code.jquery.com/jquery-4.0.0.slim.min.js" integrity="sha256-8DGpv13HIm+5iDNWw1XqxgFB4mj+yOKFNb+tHBZOowc=" crossorigin="anonymous"></script>
 <script src="{{ url_for('static', filename='script.js')}}"></script>
 </html>
