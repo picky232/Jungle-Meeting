@@ -1,111 +1,111 @@
 {% extends "header.html" %}
 
-<!DOCTYPE html>
-<html lang="ko">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block head %}
+<style>
+    * {
+        font-family: 'Noto Sans KR', sans-serif;
+    }
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    .logo-meeting {
+        color: #FFFFFF;
+        font-weight: 1000;
+        -webkit-text-stroke: 1px #000000;
+    }
 
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    .profile-img-dh {
+        width: 200px !important;
+        height: 200px !important;
+        object-fit: cover;
+        margin: 0 auto;
+    }
 
-        <style>
-            *{
-                font-family: 'Noto Sans KR', sans-serif;
-            }
-            .logo-meeting{
-                color: #FFFFFF;
-                font-weight: 1000;
-                -webkit-text-stroke: 1px #000000;
-            }
-            .profile-img-dh{
-                width: 200px !important;
-                height: 200px !important;
-                object-fit: cover;
-                margin: 0 auto;
-            } 
-            .profile{
-                margin: 30px;
-                width: calc(100% - 60px);
-                height: calc(100dvh - 60px - 10dvh);
-            }
-            .profile--info{
-                display: flex;
-                flex-direction: column;
-                align-items: start;
-                max-width: 20%;
-            }
-            .profile--info-text{
-                font-size: 24px;
-                font-weight: 500;
-                color:#000000;
-            }
-            .profile-line{
-                width: 200px;
-                margin: 0 auto;
-                margin-top: 10px;
-                margin-bottom: 10px;
-                background-color:#000000;
-            }
-            .profile-desc{
-                margin: 20px;
-                padding: 2%;
-                min-height: 80%;
-                max-height: 80%;
-                overflow-y: auto;
-            }
-            .profile-tag-list{
-                margin: 20px;
-                padding: 2%;
-                min-height: 10%;
-                max-height: 10%;
-                overflow-y: auto;
-            }
-            .profile-tag{
-                flex: 0 0 auto;
-                padding: 5px 10px;
-                margin-right: 10px;
-                margin-bottom: 10px;
-                background-color: #6CBA61;
-            }
-        </style>
-    </head>
+    .profile {
+        margin: 30px;
+        width: calc(100% - 60px);
+        height: calc(100dvh - 60px - 10dvh);
+    }
 
-    <body>
-    <div class="columns">
-        <div class="column is-narrow card profile profile--info is-flex is-justify-content-center is-align-items-center">
-            <div class="card-image">
-                <figure class="image">
-                    <img class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media">
-                    <div class="media-content">
-                        <hr class="profile-line">
-                        <div class="box profile--info-text has-text-centered">{{name}}</div>
-                        <div class="box profile--info-text has-text-centered">{{lab}}</div>
-                        <div class="box profile--info-text has-text-centered">{{gen}}-{{num}}</div>
-                    </div>
-                </div>
-            </div>
+    .profile-user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        max-width: 20%;
+    }
+
+    .profile-user-info-text {
+        font-size: 24px;
+        font-weight: 500;
+        color: #000000;
+    }
+
+    .profile-line {
+        width: 200px;
+        margin: 0 auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #000000;
+    }
+
+    .profile-desc {
+        margin: 20px;
+        padding: 2%;
+        min-height: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+    }
+
+    .profile-tag-list {
+        margin: 20px;
+        padding: 2%;
+        min-height: 10%;
+        max-height: 10%;
+        overflow-y: auto;
+    }
+
+    .profile-tag {
+        flex: 0 0 auto;
+        padding: 5px 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        background-color: #6CBA61;
+    }
+</style>
+{% endblock %}
+
+{% endblock %}
+<div class="columns">
+    <div
+        class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
+        <div class="card-image">
+            <figure class="image">
+                <img class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
+            </figure>
         </div>
-
-        <div class="column card profile">
-            <div class="card profile-desc">
-                {{desc}}
-            </div>
-            <div class="card profile-tag-list">
-                <div class="columns is-multiline">    
-                    {% for tag in tags %}
-                        <div class="column profile-tag">{{tag.name}}</div> 
-                    {% else %}
-                        <p>표시할 데이터가 없습니다.</p>
-                    {% endfor %}
+        <div class="card-content">
+            <div class="media">
+                <div class="media-content">
+                    <hr class="profile-line">
+                    <div class="box profile-user-info-text has-text-centered">{{name}}</div>
+                    <div class="box profile-user-info-text has-text-centered">{{lab}}</div>
+                    <div class="box profile-user-info-text has-text-centered">{{gen}}-{{num}}</div>
                 </div>
             </div>
         </div>
     </div>
-    </body>
-</html>
+
+    <div class="column card profile">
+        <div class="card profile-desc">
+            {{desc}}
+        </div>
+        <div class="card profile-tag-list">
+            <div class="columns is-multiline">
+                {% for tag in tags %}
+                <div class="column profile-tag">{{tag.name}}</div>
+                {% else %}
+                <p>표시할 데이터가 없습니다.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
