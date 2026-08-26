@@ -53,7 +53,9 @@ ca = certifi.where()
 client = MongoClient(mongo_uri, tlsCAFile=ca) # 인증서 검증시 ca에 담아둔 경로 사용
 db = client["JM"]
 collection = db["users"]
+
 tags_collection = db["tags"]
+
 
 # 시작 메인 페이지
 @app.route('/')
@@ -85,12 +87,12 @@ def loginGet():
 
 @app.route('/login', methods=['POST'])
 def login():
-    return render_template('')
+    return render_template('login.html')
 
 # 회원가입페이지
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signUp():
-    return render_template('')
+    return render_template('signup.html')
 
 # 프로필확인 페이지 - 사용자 -> 다른사용자 프로필 확인
 @app.route('/profile', methods=['GET'])
@@ -110,3 +112,5 @@ def reWrite():
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
+
+    
