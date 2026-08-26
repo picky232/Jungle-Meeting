@@ -3,7 +3,7 @@
 {% block head %}
 <script>
     function goFixInfoPage() {
-        window.location.href = `{{url_for('fixDescriptionPage') }}`;
+        window.location.href = `{{url_for('fixDescriptionPage', user_id=userId) }}`;
     }
 </script>
 
@@ -96,7 +96,7 @@
                 <div class="media-content">
                     <hr class="profile-line"> <br>
                     <div class="profile-user-info-text has-text-centered">{{name}}</div>
-                    <div class="profile-user-id-text has-text-centered">{{id}}</div> <br>
+                    <div class="profile-user-id-text has-text-centered">{{userId}}</div> <br>
                     <div class="profile-user-info-text has-text-centered">{{lab}}</div> <br>
                     <div class="profile-user-info-text has-text-centered">{{gen}}-{{num}}</div> <br>
                     <div class="button profile-info-fix-btn" onclick="goFixInfoPage()"
@@ -113,9 +113,9 @@
         <div class="card profile-tag-list">
             <div class="columns is-multiline">
                 {% for tag in tags %}
-                <div class="column profile-tag" style="background-color: #6CBA61;">{{tag.name}}</div>
+                    <div class="column profile-tag" style="background-color: #6CBA61;">{{tag}}</div>
                 {% else %}
-                <p>표시할 데이터가 없습니다.</p>
+                    <p>표시할 데이터가 없습니다.</p>
                 {% endfor %}
             </div>
         </div>

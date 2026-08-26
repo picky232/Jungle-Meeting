@@ -72,13 +72,13 @@
 </style>
 {% endblock %}
 
-{% endblock %}
+{% block content %}
 <div class="columns">
     <div
         class="column is-narrow card profile profile-user-info is-flex is-justify-content-center is-align-items-center">
         <div class="card-image">
             <figure class="image">
-                <img class="profile-img-dh" src="{{img-path}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
+                <img class="profile-img-dh" src="{{imgPath}}" alt="테스트 프로필 이미지" style="border: 3px solid #AEE996; ">
             </figure>
         </div>
         <div class="card-content">
@@ -87,7 +87,7 @@
                     <hr class="profile-line">
                     <div class="box profile-user-info-text has-text-centered">{{name}}</div>
                     <div class="box profile-user-info-text has-text-centered">{{lab}}</div>
-                    <div class="box profile-user-info-text has-text-centered">{{gen}}-{{num}}</div>
+                    <div class="box profile-user-info-text has-text-centered">{{gen}}기-{{num}}번</div>
                 </div>
             </div>
         </div>
@@ -100,9 +100,9 @@
         <div class="card profile-tag-list">
             <div class="columns is-multiline">
                 {% for tag in tags %}
-                <div class="column profile-tag">{{tag.name}}</div>
+                    <div class="column profile-tag" style="background-color: #6CBA61;">{{tag}}</div>
                 {% else %}
-                <p>표시할 데이터가 없습니다.</p>
+                    <p>표시할 데이터가 없습니다.</p>
                 {% endfor %}
             </div>
         </div>

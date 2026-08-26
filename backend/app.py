@@ -5,8 +5,32 @@ from dotenv import load_dotenv # dotenv 라이브러리 불러오기
 # CA(인증기관) 루트 인증서 묶음 들고있는 패키지
 import certifi
 
+from dotenv import load_dotenv # dotenv 라이브러리 불러오기
+# CA(인증기관) 루트 인증서 묶음 들고있는 패키지
+import certifi
+import boto3
+# JWT 인증
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
 # .env파일 로드
 load_dotenv()
+
+s3_client = boto3.client(
+    's3',
+    region_name=os.environ.get('AWS_REGION')
+)
+
+BUCKET_NAME = os.environ.get('AWS_BUCKET_NAME')
+REGION = os.environ.get('AWS_REGION')
+
+def upload_image_to_s3(file, filename): # file : 사용자가 올린파일, filename : S3에 저장될 이름
+    s3_client.upload_fileobj(
+        file,
+        BUCKET_NAME,
+        filename,
+        ExtraArgs={"ContentType": file.content_type}
+    )
+    return f"https://{BUCKET_NAME}.s3.{REGION}.amazonaws.com/{filename}"
 
 app = Flask( 
     # front폴더로 나누어서 Flask에서 templates, static을 찾게되면 backend/templates 등으로 찾게되서 경로 오류 발생함
@@ -14,6 +38,10 @@ app = Flask(
     template_folder="../front/templates",
     static_folder="../front/static"
 )
+
+#실제 운영환경 안전하게 관리 필요
+app.config["JWT_SECRET_KEY"] = "your-super-secret-key"
+jwt = JWTManager(app)
 
 # os.environ.get으로 .env에 넣은 변수명 가져오기
 mongo_uri = os.environ.get('MONGO_URI')
@@ -26,17 +54,36 @@ client = MongoClient(mongo_uri, tlsCAFile=ca) # 인증서 검증시 ca에 담아
 db = client["JM"]
 collection = db["users"]
 
+# collection.insert_one({
+#         "userId": "test1",
+#         "name":"jiho", 
+#         "lab": "SW-AI랩",
+#         "gen": "13기",
+#         "tags" : ["강아지", "고양이"]
+#     })
+
+collection.delete_many({ "userId": "test1" })
 
 # 시작 메인 페이지
 @app.route('/')
 def mainpage():
-    collection.insert_one({"userId": "test1"})
+    # collection.insert_one({"userId": "test1", })
     all_users = list(collection.find({}, {"_id": 0}))
-    print(all_users)
+    # print(all_users)
     return render_template('main.html')
 
-# 로그인 페이
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/makeCard/jungle', methods=['GET'])
+def makeCard():
+    userData = list(collection.find({}, {"_id":0}))
+    print(userData)
+    return jsonify(userData)
+
+# 로그인 페이지 - 중복확인
+@app.route('/login', methods=['GET'])
+def loginGet():
+    return render_template('')
+
+@app.route('/login', methods=['POST'])
 def login():
     return render_template('')
 
@@ -48,7 +95,7 @@ def signUp():
 # 프로필확인 페이지 - 사용자 -> 다른사용자 프로필 확인
 @app.route('/profile', methods=['GET'])
 def profilePage():
-    return render_template('')
+    return render_template('Profile.html')
 
 # 나의회원정보 확인
 @app.route('/description', methods=['POST'])
