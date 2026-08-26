@@ -1,20 +1,8 @@
 {% extends "header.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
-     -->
-    <title>{% block title %}Jungle Meeting{% endblock %}</title>
-    <style>
-        
-    </style>
-</head>
+{% block title %}Jungle Meeting{% endblock %}
 
-<body>
-    {% block content %}
+{% block content %}
     <div class="contents">
         <div class="explain">
             <h1 style="text-align: center; padding: 20px; color: black;">설명이 들어갑니다</h1>
@@ -22,25 +10,9 @@
         <div class="main-box">
             <div class="tag-box">
                 <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
-                <span class="tag is-light">고양이</span>
             </div>
             <div class="card-boxes">
-                <div class="jungle-card">
+                <!-- <div class="jungle-card">
                     <div class="cd-profile-photo">
                         <img src="{{ url_for('static', filename='images/IMG_0224.jpg') }}" alt="photo" srcset="">
                     </div>
@@ -48,14 +20,72 @@
                         <div class="cd-name">성명 : 신지호</div>
                         <div class="lab-type">SW-AI랩(정글) </div>
                         <div class="yearnum">13기-8</div>
-                        <div class="personal-tag"></div>
+                        <div class="personal-tag">
+                            <span class="tag is-light">고양이</span>
+                            <span class="tag is-light">고양이</span>
+                            <span class="tag is-light">고양이</span>
+                            <span class="tag is-light">고양이</span>
+                            <span class="tag is-light">고양이</span>
+                            <span class="tag is-light">고양이</span>
+                            <span class="tag is-light">고양이</span>
+                            <span class="tag is-light">고양이</span>
+                        </div>
                     </div>
-                </div>
+                </div> -->
                 
             </div>
         </div>
     </div>
-    {% endblock %}
-</body>
+    <script>
+        async function makeCard(){
+            const response = await fetch('/makeCard/jungle') /* Get요청으로 데이터 받아옴 */
+            const users = await response.json() /* json 배열로 변환 */
 
-</html>
+            const container = document.querySelector('.card-boxes');
+
+            if(!container) return;
+
+            container.innerHTML='';
+
+            users.forEach(user => {
+
+                if (!user.name || !user.lab || !user.gen || !user.num) {
+                    return; // 조건 미충족 시 다음 사람 데이터로 건너뜀
+                }
+
+                let tagContainerHtml = '';
+                if (Array.isArray(user.tags) && user.tags.length > 0) {
+                    const sliceTags = user.tags.slice(0, 6);
+                    let spans = '';
+                
+                    sliceTags.forEach(tag => {
+                        spans += `<span class="tag is-light">${tag}</span> `;
+                    });
+
+                    tagContainerHtml = `<div class="personal-tag">${spans}</div>`;
+                }
+
+                const tagsHtml = Array.isArray(user.tags)
+                ? user.tags.slice(0, 6).map(tag => `<span class="tag is-light">${tag}</span>`).join(' ')
+                : `<span class="tag is-light">${user.tags}</span>`;
+
+                const card_html = `<div class="jungle-card">
+                        <div class="cd-profile-photo">
+                            <img src="/static/images/IMG_0224.jpg" alt="photo">
+                        </div>
+                        <div class="cd-comments">
+                            <div class="cd-name">${user.name}</div>
+                            <div class="lab-type">${user.lab}</div>
+                            <div class="yearnum">${user.gen}기-${user.num}</div>
+                            ${tagContainerHtml}
+                        </div>
+                        </div>`
+                container.insertAdjacentHTML("beforeend" ,card_html)
+            });
+        }
+
+        window.onload = function(){
+            makeCard()
+        }
+    </script>
+{% endblock %}

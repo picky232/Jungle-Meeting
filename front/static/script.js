@@ -1,8 +1,11 @@
-function openmenu(){
+function openmenu() {
     document.querySelector('.infomenu').classList.toggle('open')
 }
-var arrow = document.getElementByid('arrow-down')
+var arrow = document.getElementById('arrow-down')
 arrow.addEventListener('click', () => {
     arrow.classList.toggle('rotate-180')
 })
 
+function rewriteInfo() {
+    // window.location.href= `{{url_for('profilePage{{id}}')}}`
+}
