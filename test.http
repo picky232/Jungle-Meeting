@@ -1,0 +1,11 @@
+### 1. 로그인 (토큰 발급)
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "username": "eunah"
+}
+
+### 2. 보호된 대시보드 접근 (아래 <토큰> 자리에 발급받은 문자열을 넣으세요)
+GET http://localhost:5000/api/dashboard
+Authorization: Bearer <토큰>
