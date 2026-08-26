@@ -63,6 +63,10 @@ def mainpage():
     # print(all_users)
     return render_template('main.html')
 
+@app.route('/')
+def home():
+    return redirect('/signup')
+
 @app.route('/makeCard/jungle', methods=['GET'])
 def makeCard():
     userData = list(collection.find({}, {"_id":0}))
