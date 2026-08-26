@@ -9,9 +9,11 @@ from dotenv import load_dotenv # dotenv 라이브러리 불러오기
 # CA(인증기관) 루트 인증서 묶음 들고있는 패키지
 import certifi
 
+from bson import ObjectId
 import json
 import uuid
 import markdown
+import bcrypt
 
 import jwt
 
@@ -48,6 +50,7 @@ def inject_user():
     currentUser = get_current_user()
 
     return {
+        'userName':currentUser['name'] if currentUser is not None else None,
         'currentUser':currentUser,
         'isLoggedIn':currentUser is not None
     }
@@ -84,21 +87,6 @@ def create_token(user):
         algorithm="HS256"
     )
 
-# 임시 코드
-def demo_create_cookie(user):
-    token = create_token(user)
-
-    response = jsonify({'result': 'success'})
-
-    response.set_cookie(
-        "access_token",
-        token,
-        httponly=True,
-        max_age=60*60*5
-    )
-
-    return response
-
 def get_current_user():
     token = request.cookies.get("access_token")
 
@@ -110,14 +98,14 @@ def get_current_user():
             token,
             jwt_secret,
             algorithms=["HS256"]
-        ) 
+        )
 
         mongo_id = payload.get("sub")
 
         if mongo_id is None:
             return None
 
-        user = collection.find_one({'_id':mongo_id})
+        user = collection.find_one({'_id':ObjectId(mongo_id)})
 
         return user
     except(
@@ -277,6 +265,221 @@ def fixDescriptionPage():
         tags=currentUser['tags'],
         dbTags=tagResult
         )
+
+
+# 화면 전환 라우트
+@app.route('/signup', methods=['GET']) 
+def signup_page():  # 회원가입 페이지
+    return render_template('signup.html') 
+
+@app.route('/login', methods=['GET']) 
+def login_page():  # 로그인 페이지
+    return render_template('login.html') 
+
+# 아이디 중복 확인 API
+@app.route('/checkUserid', methods=['POST'])
+def check_userid():
+
+    # form 데이터 또는 JSON 데이터 받기
+    input_id = request.form.get('give_id')
+
+    print("입력된 ID:", input_id)
+    if not input_id:
+        data = request.get_json(silent=True)
+        if data:
+            input_id = data.get('give_id')
+
+    if not input_id:
+        return jsonify({
+            'exists': False,
+            'result': 'fail',
+            'msg': '아이디를 입력해주세요.'
+        })
+
+    # DB에서 아이디 확인
+    user = collection.find_one({'userId': input_id})
+
+    if user:
+        return jsonify({
+            'exists': True,
+            'result': 'fail',
+            'msg': '이미 존재하는 아이디입니다.'
+        })
+
+    return jsonify({
+        'exists': False,
+        'result': 'success',
+        'msg': '사용 가능한 아이디입니다.'
+    })
+
+
+# 회원가입 API
+@app.route('/signup', methods=['POST']) 
+def signup():
+    id_receive = request.form.get('id') 
+    name_receive = request.form.get('name')
+    sel1_receive = request.form.get('sel1')
+    sel2_receive = request.form.get('sel2') 
+    number_receive = request.form.get('number') 
+    pw_receive = request.form.get('pw')
+
+    if not id_receive: 
+        return jsonify({ 
+            'result': 'fail', 
+            'msg': '아이디를 입력해주세요.'
+        })
+
+    if not pw_receive:
+        return jsonify({ 
+            'result': 'fail', 
+            'msg': '비밀번호를 입력해주세요.' 
+        })
+
+
+    # 서버 측 2차 아이디 중복 확인
+    existing_user = collection.find_one({'userId': id_receive}) 
+
+    if existing_user:  # 같은 ID O
+        return jsonify({ 
+            'result': 'fail', 
+            'msg': '이미 존재하는 ID입니다.' 
+        })
+
+    # 비밀번호 암호화
+    hashed_password = bcrypt.hashpw(  # 해시 
+        pw_receive.encode('utf-8'), 
+        bcrypt.gensalt()  
+    )
+
+    # 회원 정보 생성
+    doc = {  
+        'userId': id_receive,  
+        'name': name_receive, 
+        'imgPath': '',  
+        'lab': sel1_receive, 
+        'gen': sel2_receive, 
+        'num': number_receive, 
+        'desc': '', 
+        'tags': [], 
+        'password': hashed_password  
+    }
+
+    collection.insert_one(doc)
+
+    return jsonify({ 
+        'result': 'success', 
+        'msg': '회원가입이 완료되었습니다.' 
+    })
+
+
+# 로그인 처리
+@app.route("/login", methods=["POST"])
+def login():
+
+    # JSON 데이터 받기
+    data = request.get_json()
+
+    # JSON 데이터가 없는 경우
+    if not data:
+        return jsonify({
+            "success": False,
+            "msg": "로그인 정보를 받을 수 없습니다."
+        }), 400
+
+    # ID / PW 받기
+    input_id = data.get("give_id")
+    input_pw = data.get("give_pw")
+
+    # 앞뒤 공백 제거
+    if input_id:
+        input_id = input_id.strip()
+    if input_pw:
+        input_pw = input_pw.strip()
+
+    # 입력값 확인
+    if not input_id:
+        return jsonify({
+            "success": False,
+            "msg": "ID를 입력해주세요."
+        })
+
+    if not input_pw:
+        return jsonify({
+            "success": False,
+            "msg": "PW를 입력해주세요."
+        })
+
+    user = collection.find_one({"userId": input_id})
+
+    if user is None:
+        return jsonify({
+            "result": "fail",
+        })
+
+    # DB에 저장된 비밀번호 가져오기
+    hashed_password = user.get("password")
+
+    if not hashed_password:
+        return jsonify({
+            "success": False,
+            "msg": "등록된 비밀번호 정보를 찾을 수 없습니다."
+        })
+
+
+    # 비밀번호 확인
+    try:
+        password_match = bcrypt.checkpw(
+            input_pw.encode("utf-8"),
+            hashed_password
+        )
+
+    except Exception as e:
+        print("비밀번호 확인 오류:", e)
+
+        return jsonify({
+            "success": False,
+            "msg": "비밀번호 확인 중 오류가 발생했습니다."
+        }), 500
+
+
+    # 로그인 성공
+    if password_match:
+        print(f"로그인 성공: {input_id}")
+
+        token = create_token(user)
+
+        response = jsonify({
+            "success": True,
+            "msg": "로그인 성공",
+            "userId": user["userId"],
+            "name": user.get("name", "")
+        })
+
+        response.set_cookie(
+            "access_token",
+            token,
+            httponly=True,
+            max_age=60*60*5
+        )
+        return response
+
+    # 로그인 실패
+    print(f"로그인 실패: {input_id}")
+
+    return jsonify({
+        "success": False,
+        "msg": "ID 또는 PW가 올바르지 않습니다."
+    })
+
+@app.route("/logout", methods=["GET"])
+def logout():
+    response = jsonify({
+        'result': 'success'
+    })
+
+    response.delete_cookie('access_token')
+
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)

@@ -189,7 +189,7 @@
                   success: function(response) {
                       if (response.success) {
                         const userId = response.userId;
-                        window.location.href = `/main/${userId}`;
+                        window.location.href = `/`;
 
                       } else {
                           warning.text(response.msg);
