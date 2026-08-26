@@ -155,9 +155,11 @@
         // db에서 받아왔다 치고
         const testTags = ["게임", "게임2", "게임3", "고양이", "개", "개발", "SW", "AI"];
 
+        // 이쁜 디자인의 버튼 클릭하면 실제 숨겨진 img업로드 버튼이 눌림
         imgInputButton.addEventListener("click", function () {
             imgInput.click();
         });
+        
         imgInput.addEventListener("change", function () {
             const file = imgInput.files[0];
             if (file) {
@@ -317,6 +319,7 @@
         <div class="card-content">
             <div class="media">
                 <div class="media-content">
+                    <!-- 이미지 넣기 버튼 but 디자인 별로여서 숨겨둠 이미지업로드 버튼 사용 -->
                     <input type="file" id="img-input" class="file-input" accept="image/*" hidden>
                     <div class="is-flex">
                         <button class="select-button file-button" id="img-input-button">이미지 업로드</button>

@@ -261,10 +261,10 @@ header {
 }
 
 .personal-tag {
-    background-color: red;
-    width: 160px;
-    height: 30px;
+    width: 180px;
     margin-top: 7px;
+    display: flex;
+    flex-wrap: wrap;
+    height: 60px;
 }
-
 /* contents박스 태그 */
