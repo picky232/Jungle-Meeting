@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jungle Meeting | Log-in</title>
+  <title>Jungle Meeting | Login </title>
 
   <style>
     /* 전체 화면 */
@@ -114,8 +114,10 @@
       text-decoration: underline;
     }
   </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+  
   <div class="login-container">
 
     <!-- 제목 -->
@@ -139,33 +141,34 @@
     <div id="warning" class="warning"></div>
 
     <!-- 로그인 버튼 -->
-    <button id="loginBtn" class="login">로그인</button>
-
+    <button id="loginBtn" class="login" >로그인</button>
+    
     <!-- 회원가입 버튼 -->
     <button class="signup" onclick="location.href='/signup'">회원가입 하기</button>
 
   </div>
 
   <script>
-    document.getElementById("loginBtn")
-      .addEventListener("click", function(event) {
-        const userId = document.getElementById("userId").value.trim();
-        const userPw = document.getElementById("userPw").value.trim();
-        const warning = document.getElementById("warning");
+   $(document).ready(function() {
+    $("#loginBtn").on("click", function(event) {
+      const userId = $.trim($("#userId").val());
+      const userPw = $.trim($("#userPw").val());
+      const warning = $("#warning");
 
-        if (userId === "" && userPw === "") {
-          warning.textContent = "ID와 PW를 입력해주세요!";
-          event.preventDefault();
-        } else if (userId === "") {
-          warning.textContent = "ID를 입력해주세요!";
-          event.preventDefault();
-        } else if (userPw === "") {
-          warning.textContent = "PW를 입력해주세요!";
-          event.preventDefault();
-        } else {
-          warning.textContent = ""; // 정상 입력 시 경고 제거
-        }
+      if (userId === "" && userPw === "") {
+        warning.text("ID와 PW를 입력해주세요!");
+        event.preventDefault();
+      } else if (userId === "") {
+        warning.text("ID를 입력해주세요!");
+        event.preventDefault();
+      } else if (userPw === "") {
+        warning.text("PW를 입력해주세요!");
+        event.preventDefault();
+      } else {
+        warning.text(""); // 정상 입력 시 경고 제거
+      }
     });
+  });
   </script>
 </body>
 </html>
