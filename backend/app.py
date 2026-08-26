@@ -54,14 +54,6 @@ client = MongoClient(mongo_uri, tlsCAFile=ca) # 인증서 검증시 ca에 담아
 db = client["JM"]
 collection = db["users"]
 
-# collection.insert_one({
-#         "userId": "test1",
-#         "name":"jiho", 
-#         "lab": "SW-AI랩",
-#         "gen": "13기",
-#         "tags" : ["강아지", "고양이"]
-#     })
-
 collection.delete_many({ "userId": "test1" })
 
 # 시작 메인 페이지
@@ -74,8 +66,14 @@ def mainpage():
 
 @app.route('/makeCard/jungle', methods=['GET'])
 def makeCard():
-    userData = list(collection.find({}, {"_id":0}))
+    userData = list(collection.find({}, {
+        "_id":0, 
+        "desc":0,
+        "password":0
+        }))
     print(userData)
+
+    # 딕셔너리에서 password필드 제거
     return jsonify(userData)
 
 # 로그인 페이지 - 중복확인
