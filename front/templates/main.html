@@ -72,7 +72,7 @@
                 const profileImg = user.imgPath || '/static/images/IMG_0224.jpg';
 
                 const card_html = `
-                <div class="jungle-card" onclick="moveprofilePage(${user.userId})">
+                <div class="jungle-card" onclick="moveprofilePage('${user.userId}')">
                     <div class="cd-profile-photo">
                         <img src="${profileImg}" alt="photo">
                     </div>
@@ -113,7 +113,7 @@
     });
 
     function moveprofilePage(id) {
-        window.location.href = `/profile/${encodeURIComponent(id)}`
+        window.location.href = `/profile/${encodeURIComponent(id)}`;
     }
     
 </script>
