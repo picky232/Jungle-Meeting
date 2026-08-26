@@ -1,13 +1,15 @@
-# 1. 아이디 중복 버튼 클릭 시 아이디 중복 여부 확인
-#   2. 중복이면 아이디 중복 경고문
-#   3. 중복이 아니면 회원가입 가능
-# 4. 아이디를 포함한 모든 정보 DB에 저장
-#   5. 보안을 위해 비밀번호를 해시(Hash) 형태로 암호화합니다
-# 6. 회원가입 버튼 클릭 시 로그인 페이지로 이동
-
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
-import bcrypt
+import os
+from dotenv import load_dotenv # dotenv 라이브러리 불러오기
+# CA(인증기관) 루트 인증서 묶음 들고있는 패키지
+import certifi
+
+# JWT 인증
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+
+# .env파일 로드
+load_dotenv()
 
 app = Flask( 
     # front폴더로 나누어서 Flask에서 templates, static을 찾게되면 backend/templates 등으로 찾게되서 경로 오류 발생함
@@ -16,9 +18,33 @@ app = Flask(
     static_folder="../front/static"
 )
 
-# MongoDB 연결 설정 
-client = MongoClient('mongodb://localhost:5000/') #임시링크 
-db = client.jungle_meeting
+#실제 운영환경 안전하게 관리 필요
+app.config["JWT_SECRET_KEY"] = "your-super-secret-key"
+jwt = JWTManager(app)
+
+# os.environ.get으로 .env에 넣은 변수명 가져오기
+mongo_uri = os.environ.get('MONGO_URI')
+
+# 인증서 파일 경로 문자열 리턴
+ca = certifi.where()
+
+# MongoDB 클러스터 연결
+client = MongoClient(mongo_uri, tlsCAFile=ca) # 인증서 검증시 ca에 담아둔 경로 사용
+db = client["JM"]
+collection = db["users"]
+
+
+# 시작 메인 페이지
+@app.route('/')
+def mainpage():
+    collection.insert_one({"userId": "test1"})
+    all_users = list(collection.find({}, {"_id": 0}))
+    print(all_users)
+    return render_template('main.html')
+
+from flask import Flask, render_template, request, jsonify, redirect, url_for
+from pymongo import MongoClient
+import bcrypt
 
 #화면 전환 라우트
 @app.route('/signup', methods=['GET'])

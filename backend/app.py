@@ -43,12 +43,12 @@ def mainpage():
     return render_template('main.html')
 
 # 로그인 페이
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     return render_template('login.html')
 
 # 회원가입페이지
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signUp():
     return render_template('signup.html')
 
