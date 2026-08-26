@@ -3,89 +3,117 @@
 {% block title %}Jungle Meeting{% endblock %}
 
 {% block content %}
-    <div class="contents">
-        <div class="explain">
-            <h1 style="text-align: center; padding: 20px; color: black;">설명이 들어갑니다</h1>
+<div class="contents">
+    <div class="explain">
+        <div>낯가리는 당신을 위해</div>
+        <div>Jungle Meeting이 돕습니다.</div>
+        <div>자신과 비슷한 관심사를 가진 사람들을 찾아보세요.</div>
+        <div>자신을 설명하는 글을 적고 사람들과 함께 공유해보세요</div>
+    </div>
+    <div class="main-box">
+        <div class="tag-box">
+
         </div>
-        <div class="main-box">
-            <div class="tag-box">
-                <span class="tag is-light">고양이</span>
-            </div>
-            <div class="card-boxes">
-                <!-- <div class="jungle-card">
-                    <div class="cd-profile-photo">
-                        <img src="{{ url_for('static', filename='images/IMG_0224.jpg') }}" alt="photo" srcset="">
-                    </div>
-                    <div class="cd-comments">
-                        <div class="cd-name">성명 : 신지호</div>
-                        <div class="lab-type">SW-AI랩(정글) </div>
-                        <div class="yearnum">13기-8</div>
-                        <div class="personal-tag">
-                            <span class="tag is-light">고양이</span>
-                            <span class="tag is-light">고양이</span>
-                            <span class="tag is-light">고양이</span>
-                            <span class="tag is-light">고양이</span>
-                            <span class="tag is-light">고양이</span>
-                            <span class="tag is-light">고양이</span>
-                            <span class="tag is-light">고양이</span>
-                            <span class="tag is-light">고양이</span>
-                        </div>
-                    </div>
-                </div> -->
-                
-            </div>
+        <div class="card-boxes">
+
         </div>
     </div>
-    <script>
-        async function makeCard(){
-            const response = await fetch('/makeCard/jungle') /* Get요청으로 데이터 받아옴 */
-            const users = await response.json() /* json 배열로 변환 */
+</div>
+
+<script>
+    async function maketags() {
+        try {
+            const response = await fetch('/maketags');
+            const tags = await response.json(); // [{'name': '게임'}, {'name': '고양이'}]
+
+            const container = document.querySelector('.tag-box');
+            if (!container) return;
+
+            container.innerHTML = ''; // 오타 수정 (쉼표 -> 마침표)
+
+            // 1. Array.map을 이용해 각 객체의 name으로 <span> 태그 생성 후 하나의 문자열로 결합
+            const tagsHtml = tags
+                .filter(tag => tag && tag.name && tag.name.trim() !== '') // 빈 값/공백 태그 방어
+                .map(tag => `<span class="tag is-light">${tag.name}</span>`)
+                .join('');
+
+            // 2. 완성된 HTML을 tag-box 안에 한번에 삽입
+            container.innerHTML = tagsHtml; // 또는 container.insertAdjacentHTML("beforeend", tagsHtml);
+        } catch (error) {
+            console.error("태그 목록 로드 중 오류 발생:", error);
+        }
+    }
+
+    async function makeCard() {
+        try {
+            const response = await fetch('/makeCard/jungle');
+            const users = await response.json();
 
             const container = document.querySelector('.card-boxes');
+            if (!container) return;
 
-            if(!container) return;
-
-            container.innerHTML='';
+            container.innerHTML = '';
 
             users.forEach(user => {
-
                 if (!user.name || !user.lab || !user.gen || !user.num) {
-                    return; // 조건 미충족 시 다음 사람 데이터로 건너뜀
+                    return; // 필수 데이터 누락 시 건너뜀
                 }
 
-                let tagContainerHtml = '';
+                // 1. 6개 제한 없이 전체 태그 HTML 생성
+                let tagsHtml = '';
                 if (Array.isArray(user.tags) && user.tags.length > 0) {
-                    const sliceTags = user.tags.slice(0, 6);
-                    let spans = '';
-                
-                    sliceTags.forEach(tag => {
-                        spans += `<span class="tag is-light">${tag}</span> `;
-                    });
-
-                    tagContainerHtml = `<div class="personal-tag">${spans}</div>`;
+                    tagsHtml = user.tags
+                        .map(tag => `<span class="tag is-light">${tag}</span>`)
+                        .join('');
+                } else {
+                    tagsHtml = ``
                 }
 
-                const tagsHtml = Array.isArray(user.tags)
-                ? user.tags.slice(0, 6).map(tag => `<span class="tag is-light">${tag}</span>`).join(' ')
-                : `<span class="tag is-light">${user.tags}</span>`;
+                const profileImg = user.imgPath || '/static/images/IMG_0224.jpg';
 
-                const card_html = `<div class="jungle-card">
-                        <div class="cd-profile-photo">
-                            <img src="/static/images/IMG_0224.jpg" alt="photo">
+                const card_html = `
+                <div class="jungle-card" onclick="moveprofilePage('${user.userId}')">
+                    <div class="cd-profile-photo">
+                        <img src="${profileImg}" alt="photo">
+                    </div>
+                    <div class="cd-comments">
+                        <div class="cd-name">${user.name}</div>
+                        <div class="lab-type">${user.lab}</div>
+                        <div class="yearnum">${user.gen}기-${user.num}</div>
+                        <div class="personal-tag">
+                            ${tagsHtml}
                         </div>
-                        <div class="cd-comments">
-                            <div class="cd-name">${user.name}</div>
-                            <div class="lab-type">${user.lab}</div>
-                            <div class="yearnum">${user.gen}기-${user.num}</div>
-                            ${tagContainerHtml}
-                        </div>
-                        </div>`
-                container.insertAdjacentHTML("beforeend" ,card_html)
+                    </div>
+                </div>`;
+
+                container.insertAdjacentHTML("beforeend", card_html);
+
+                // 2. DOM 렌더링 후 기존 CSS 높이를 넘어서는 태그 자동 자르기
+                const currentCard = container.lastElementChild;
+                const tagContainer = currentCard.querySelector('.personal-tag');
+
+                if (tagContainer) {
+                    // 브라우저가 기존 CSS 스타일을 적용해 레이아웃을 완전히 그린 후 높이 계산
+                    requestAnimationFrame(() => {
+                        // scrollHeight(실제 콘텐츠 총 높이)가 clientHeight(기존 CSS로 설정된 보여지는 높이)보다 크면 넘친 태그 제거
+                        while (currentCard.scrollHeight > currentCard.clientHeight && tagContainer.lastElementChild) {
+                            tagContainer.lastElementChild.remove();
+                        }
+                    });
+                }
             });
+        } catch (error) {
+            console.error("카드 생성 중 오류 발생:", error);
         }
+    }
 
-        window.onload = function(){
-            makeCard()
-        }
-    </script>
+    document.addEventListener("DOMContentLoaded", function () {
+        makeCard();
+        maketags();
+    });
+
+    function moveprofilePage(id) {
+        window.location.href = `/profile/${encodeURIComponent(id)}`;
+    }
+</script>
 {% endblock %}

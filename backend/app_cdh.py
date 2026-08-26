@@ -6,6 +6,10 @@ from dotenv import load_dotenv # dotenv 라이브러리 불러오기
 import certifi
 import json
 import uuid
+import markdown
+
+import jwt
+from flask import make_response, redirect, url_for
 
 load_dotenv()
 
@@ -18,6 +22,7 @@ app = Flask(
 
 # os.environ.get으로 .env에 넣은 변수명 가져오기
 mongo_uri = os.environ.get('MONGO_URI')
+jwt_secret = os.environ.get("JWT_SECRET")
 
 # 인증서 파일 경로 문자열 리턴
 ca = certifi.where()
@@ -31,10 +36,64 @@ tagdb = db["tags"]
 # 시작 메인 페이지
 @app.route('/')
 def mainpage():
-    collection.insert_one({"userId": "test2", "name":"test1", "imgPath":"", "lab":"SW-AI", "gen":"13", "num":"15", "desc": "testTestTestTest", "tags":{}})
     all_users = list(collection.find({}, {"_id": 0}))
     print(all_users)
     return render_template('main.html')
+
+# user = collection.find_one({"userId": user_id})
+def create_token(user):
+    payload = {
+        "sub": str(user['_id'])
+    }
+
+    return jwt.encode(
+        payload,
+        jwt_secret,
+        algorithm="HS256"
+    )
+
+# 임시 코드
+def demo_create_cookie(user):
+    token = create_token(user)
+
+    response = jsonify({'result': 'success'})
+
+    response.set_cookie(
+        "access_token",
+        token,
+        httponly=True,
+        max_age=60*60*5
+    )
+
+    return response
+
+def get_current_user():
+    token = request.cookies.get("access_token")
+
+    if token is None:
+        return None
+
+    try:
+        payload = jwt.decode(
+            token,
+            jwt_secret,
+            algorithms=["HS256"]
+        ) 
+
+        mongo_id = payload.get("sub")
+
+        if mongo_id is None:
+            return None
+
+        user = collection.find_one({'_id':mongo_id})
+
+        return user
+    except(
+        jwt.ExpiredSignatureError, #쿠키 유효시간
+        jwt.InvalidTokenError, #jwt가 이상할 떄 (변조, 가짜 등)
+        ValueError #내부 밸류 오류
+    ):
+        return None
 
 # 프로필확인 페이지 - 사용자 -> 다른사용자 프로필 확인
 @app.route('/profile/<user_id>', methods=['GET'])
@@ -45,6 +104,8 @@ def profilePage(user_id):
     if result is None:
         return render_template('main.html')
 
+    desc_html=markdown.markdown(result['desc']);
+
     return render_template(
         'Profile.html',
         name=result['name'],
@@ -53,7 +114,7 @@ def profilePage(user_id):
         lab=result['lab'],
         gen=result['gen'],
         num=result['num'],
-        desc=result['desc'],
+        desc=desc_html,
         tags=result['tags']
         )
 
@@ -74,12 +135,20 @@ def checkId(user_id, new_id):
 @app.route('/description/<user_id>', methods=['GET'])
 def descriptionPage(user_id):
 
-    #jwt 토큰으로 자기 자신인지 확인. 아니라면 description.html이 아닌 profile로!
+    currentUser = get_current_user()
+
+    if currentUser is None:
+        return jsonify({'result': 'fail'})
 
     result = collection.find_one({"userId":user_id})
 
     if result is None:
-        return render_template('main.html')
+        return jsonify({'result': 'fail'})
+    
+    if currentUser["_id"] != result["_id"]:
+        return jsonify({'result': 'fail'})
+
+    desc_html=markdown.markdown(result['desc']);
     
     return render_template(
         'Description.html',
@@ -89,7 +158,7 @@ def descriptionPage(user_id):
         lab=result['lab'],
         gen=result['gen'],
         num=result['num'],
-        desc=result['desc'],
+        desc=desc_html,
         tags=result['tags']
         )
 
