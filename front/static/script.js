@@ -25,7 +25,10 @@ function logout()
 {
     $.ajax({
         type:'GET',
-        url:'/logout'
+        url:'/logout',
+        success: function(response)
+        {
+            window.location.href = `/`;
+        }
     })
-    window.location.href = `/`;
 }
