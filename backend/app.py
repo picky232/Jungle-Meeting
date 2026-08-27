@@ -65,11 +65,27 @@ def makeTag():
 
 @app.route('/makeCard/jungle', methods=['GET'])
 def makeCard():
-    userData = list(collection.find({}, {
-        "_id":0, 
-        "desc":0,
-        "password":0
-        }))
+    currentUser = get_current_user()
+
+    if currentUser is None:
+        userData = list(collection.find({}, {
+            "_id":0,
+            "desc":0,
+            "password":0
+            }))
+    else:
+        userData = list(collection.find(
+            {
+            "_id":{
+                "$ne":currentUser["_id"]
+            }
+            },
+            {
+                "_id":0,
+                "desc":0,
+                "password":0
+            }))
+        
     # 딕셔너리에서 password필드 제거
     return jsonify(userData)
 
