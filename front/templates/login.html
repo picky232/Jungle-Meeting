@@ -1,124 +1,188 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jungle Meeting | Login </title>
+{% extends "header.html" %}
 
-  <style>
-    /* 전체 화면 */
-    body {
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      color: #333;
-    }
+{% block title %} Jungle Meeting | Login {% endblock %}
 
-    /* 로그인 박스 */
-    .login-container {
-      width: 400px;
-      background-color: #f9f9f9;
-      padding: 30px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+{% block head %}
+<style>
+  /* 전체 화면 */
+  body {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #333;
+  }
 
-    /* 제목 */
-    .title {
-      text-align: center;
-    }
+  .login-page {
+    width: 100%;
+    height: calc(100vh - 10vh);
 
-    .title h1 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: bold;
-      color: #2c3e50;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    /* 입력 영역 */
-    .form-row {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+  /* 로그인 박스 */
+  .login-container {
+    width: 400px;
+    background-color: #f9f9f9;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-    .form-row label {
-      font-weight: bold;
-      color: #555;
-    }
+  /* 제목 */
+  .title {
+    text-align: center;
+  }
 
-    .form-row input {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
+  .title h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
 
-    /* 경고 메시지 */
-    .warning {
-      color: #e74c3c;
-      font-size: 13px;
-      text-align: left;
-    }
+  /* 입력 영역 */
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 
-    /* 버튼 */
-    button {
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+  .form-row label {
+    font-weight: bold;
+    color: #555;
+  }
 
-    button.login {
-      background-color: #4DA359; 
-      color: #fff;
-    }
+  .form-row input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
 
-    button.login:hover {
-      background-color: #6CBA61;
-    }
+  /* 경고 메시지 */
+  .warning {
+    color: #e74c3c;
+    font-size: 13px;
+    text-align: left;
+  }
 
-    button.signup {
-      background-color: #fff;
-      border: 1px solid #4DA359;
-      color: #29382b;
-    }
+  /* 버튼 */
+  button {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
 
-    button.signup:hover {
-      background-color: #f0f0f0;
-    }
+  button.login {
+    background-color: #4DA359;
+    color: #fff;
+  }
 
-    /* 링크 */
-    .link {
-      text-align: right;
-    }
+  button.login:hover {
+    background-color: #6CBA61;
+  }
 
-    .link a {
-      font-size: 13px;
-      color: #3498db;
-      text-decoration: none;
-    }
+  button.signup {
+    background-color: #fff;
+    border: 1px solid #4DA359;
+    color: #29382b;
+  }
 
-    .link a:hover {
-      text-decoration: underline;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-  
-  <div class="login-container">
+  button.signup:hover {
+    background-color: #f0f0f0;
+  }
+
+  /* 링크 */
+  .link {
+    text-align: right;
+  }
+
+  .link a {
+    font-size: 13px;
+    color: #3498db;
+    text-decoration: none;
+  }
+
+  .link a:hover {
+    text-decoration: underline;
+  }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+
+    $("#loginbtn").on("click", function (event) {
+
+      const id = $.trim($("#id").val());
+      const pw = $.trim($("#pw").val());
+      const warning = $("#warning");
+
+      // 입력값 확인
+      if (id === "" && pw === "") {
+        warning.text("ID와 PW를 입력해주세요.");
+        return;
+      }
+
+      if (id === "") {
+        warning.text("ID를 입력해주세요.");
+        return;
+      }
+
+      if (pw === "") {
+        warning.text("PW를 입력해주세요.");
+        return;
+      }
+
+      warning.text("");
+
+
+      // 서버에 로그인 요청
+      $.ajax({
+
+        url: "/login",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          give_id: id,
+          give_pw: pw
+        }),
+
+        success: function (response) {
+          if (response.success) {
+            const userId = response.userId;
+            window.location.href = `/`;
+
+          } else {
+            warning.text(response.msg);
+          }
+        },
+
+        // 서버 통신 자체가 실패
+        error: function (xhr) {
+          console.log("로그인 서버 오류:", xhr);
+          warning.text("서버 오류가 발생했습니다.");
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}
+{% block content %}
+
+<div class="login-page">
+  <div class="login-container ">
 
     <!-- 제목 -->
     <div class="title">
@@ -141,69 +205,11 @@
     <div id="warning" class="warning"></div>
 
     <!-- 로그인 버튼 -->
-    <button id="loginbtn" class="login">로그인</button> 
-       
+    <button id="loginbtn" class="login">로그인</button>
+
     <!-- 회원가입 버튼 -->
     <button class="signup" onclick="location.href='/signup'">회원가입 하기</button>
   </div>
+</div>
 
-    <script>
-      $(document).ready(function() {
-
-          $("#loginbtn").on("click", function(event) {
-
-              const id = $.trim($("#id").val());
-              const pw = $.trim($("#pw").val());
-              const warning = $("#warning");
-
-              // 입력값 확인
-              if (id === "" && pw === "") {
-                  warning.text("ID와 PW를 입력해주세요.");
-                  return;
-              }
-
-              if (id === "") {
-                  warning.text("ID를 입력해주세요.");
-                  return;
-              }
-
-              if (pw === "") {
-                  warning.text("PW를 입력해주세요.");
-                  return;
-              }
-
-              warning.text("");
-
-
-              // 서버에 로그인 요청
-              $.ajax({
-
-                  url: "/login",
-                  type: "POST",
-                  contentType: "application/json",
-                  data: JSON.stringify({
-                      give_id: id,
-                      give_pw: pw
-                  }),
-
-                  success: function(response) {
-                      if (response.success) {
-                        const userId = response.userId;
-                        window.location.href = `/`;
-
-                      } else {
-                          warning.text(response.msg);
-                      }
-                  },
-
-                  // 서버 통신 자체가 실패
-                  error: function(xhr) {
-                      console.log("로그인 서버 오류:", xhr);
-                      warning.text("서버 오류가 발생했습니다.");
-                  }
-              });
-          });
-      });
-    </script>
-</body>
-</html>
+{% endblock %}
