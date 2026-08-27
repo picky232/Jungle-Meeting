@@ -14,7 +14,7 @@ import json
 import uuid
 import markdown
 import bcrypt
-
+from flask import redirect, url_for
 import jwt
 
 # .env파일 로드
@@ -73,18 +73,34 @@ def makeCard():
             "desc":0,
             "password":0
             }))
-    else:
-        userData = list(collection.find(
-            {
-            "_id":{
-                "$ne":currentUser["_id"]
-            }
-            },
-            {
-                "_id":0,
-                "desc":0,
-                "password":0
-            }))
+        
+        return jsonify(userData)
+        
+    currentTags = set(currentUser.get("tags", []))
+
+    userData = list(collection.find(
+        {
+        "_id":{
+            "$ne":currentUser["_id"]
+        }
+        },
+        {
+            "_id":0,
+            "desc":0,
+            "password":0
+        }))
+
+    for user in userData:
+        userTags = set(user.get("tags", []))
+
+        user["sameTagCnt"] = len(
+            currentTags & userTags
+        )
+
+    userData.sort(
+        key=lambda user: user['sameTagCnt'],
+        reverse=True
+    )
         
     # 딕셔너리에서 password필드 제거
     return jsonify(userData)
@@ -138,7 +154,7 @@ def profilePage(user_id):
     result = collection.find_one({"userId":user_id})
 
     if result is None:
-        return render_template('main.html')
+        return redirect(url_for('mainpage'))
 
     desc_html=markdown.markdown(result['desc']);
 
@@ -174,7 +190,7 @@ def descriptionPage():
     currentUser = get_current_user()
 
     if currentUser is None:
-        return jsonify({'result': 'fail'})
+        return redirect(url_for('mainpage'))
 
     desc_html=markdown.markdown(currentUser['desc'])
     
@@ -212,6 +228,11 @@ def userInfoPatch():
     desc = request.form.get('desc')
     tags = request.form.get('tags', '[]')
     tags = json.loads(tags)
+    tags=[
+        ''.join(tag.split()).upper()
+        for tag in tags
+        if ''.join(tag.split())
+    ]
     tags = list(dict.fromkeys(tags))
 
     tagdb.create_index('name', unique=True)
@@ -262,7 +283,7 @@ def fixDescriptionPage():
     currentUser = get_current_user()
 
     if currentUser is None:
-        return render_template('main.html')
+        return redirect(url_for('mainpage'))
     
     tagResult = [
         tag['name']
@@ -496,6 +517,17 @@ def logout():
     response.delete_cookie('access_token')
 
     return response
+
+@app.route("/delete", methods=["DELETE"])
+def deleteUser():
+    currentUser = get_current_user()
+
+    if currentUser is None:
+        return jsonify({'result':'fail'})
+
+    collection.delete_one({"_id": currentUser["_id"]})
+
+    return logout()
     
 if __name__ == '__main__':
     app.run(
