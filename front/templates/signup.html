@@ -1,23 +1,26 @@
-<!DOCTYPE html>
-<html lang="ko">
+{% extends "header.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Jungle Meeting | signup</title>
+    {% block title %}Jungle Meeting | signup{% endblock %}
 
+    {% block head %}
     <style>
         body {
             background-color: #ffffff;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
             color: #333;
+        }
+
+        .signup-page{
+            width: 100%;
+            height: calc(100vh - 10vh);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .signup-container {
@@ -108,136 +111,7 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-
-
-<body>
-    <div class="signup-container">
-        <div class="title">
-            <h1>회원가입</h1>
-        </div>
-
-        <!-- ID -->
-        <div class="form-row">
-            <label for="id">ID</label>
-            <div class="id-check-row">
-                <input
-                    type="text"
-                    id="id"
-                    placeholder="ID를 입력하세요."
-                />
-                <button
-                    type="button"
-                    id="checkidbtn"
-                >
-                    중복확인
-                </button>
-            </div>
-
-            <span id="idcheckmsg"></span>
-        </div>
-
-        <!-- 이름 -->
-        <div class="form-row">
-            <label for="name">이름</label>
-            <input
-                type="text"
-                id="name"
-                placeholder="이름을 입력하세요."
-            />
-        </div>
-
-
-        <!-- 정글랩 -->
-        <div class="form-row">
-            <label for="sel1">정글랩</label>
-            <select id="sel1">
-                <option value="">
-                    정글랩을 선택해주세요
-                </option>
-                <option value="SW-AI Lap">
-                    SW-AI Lap
-                </option>
-                <option value="Game Lap">
-                    Game Lap
-                </option>
-                <option value="Game Tech Lap">
-                    Game Tech Lap
-                </option>
-            </select>
-        </div>
-
-        <!-- 기수 -->
-        <div class="form-row">
-            <label for="sel2">기수</label>
-            <select id="sel2">
-                <option value="">
-                    기수를 선택해주세요
-                </option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-            </select>
-        </div>
-
-
-        <!-- 번호 -->
-        <div class="form-row">
-            <label for="number">번호</label>
-            <input
-                type="number"
-                id="number"
-                placeholder="번호를 입력하세요."
-                min="1"
-            />
-        </div>
-
-
-        <!-- 비밀번호 -->
-        <div class="form-row">
-            <label for="pw">PW</label>
-            <input
-                type="password"
-                id="pw"
-                placeholder="PW를 입력하세요."
-            />
-        </div>
-
-
-        <!-- 비밀번호 확인 -->
-        <div class="form-row">
-            <label for="pwcheck">PW 확인</label>
-            <input
-                type="password"
-                id="pwcheck"
-                placeholder="다시 한번 입력하세요."
-            />
-        </div>
-
-
-        <!-- 회원가입 -->
-        <div class="form-row">
-            <button
-                type="button"
-                id="signupbtn"
-            >
-                회원등록
-            </button>
-        </div>
-    </div>
-
-
-    <script>
+ <script>
         // ID 중복확인 상태
         let idChecked = false;
         let idAvailable = false;
@@ -425,5 +299,136 @@
             });
         });
     </script>
-</body>
-</html>
+
+    {% endblock %}
+
+
+    {% block content %}
+
+    <div class="signup-page" >
+    <div class="signup-container">
+        <div class="title">
+            <h1>회원가입</h1>
+        </div>
+
+        <!-- ID -->
+        <div class="form-row">
+            <label for="id">ID</label>
+            <div class="id-check-row">
+                <input
+                    type="text"
+                    id="id"
+                    placeholder="ID를 입력하세요."
+                />
+                <button
+                    type="button"
+                    id="checkidbtn"
+                >
+                    중복확인
+                </button>
+            </div>
+
+            <span id="idcheckmsg"></span>
+        </div>
+
+        <!-- 이름 -->
+        <div class="form-row">
+            <label for="name">이름</label>
+            <input
+                type="text"
+                id="name"
+                placeholder="이름을 입력하세요."
+            />
+        </div>
+
+
+        <!-- 정글랩 -->
+        <div class="form-row">
+            <label for="sel1">정글랩</label>
+            <select id="sel1">
+                <option value="">
+                    정글랩을 선택해주세요
+                </option>
+                <option value="SW-AI Lap">
+                    SW-AI Lap
+                </option>
+                <option value="Game Lap">
+                    Game Lap
+                </option>
+                <option value="Game Tech Lap">
+                    Game Tech Lap
+                </option>
+            </select>
+        </div>
+
+        <!-- 기수 -->
+        <div class="form-row">
+            <label for="sel2">기수</label>
+            <select id="sel2">
+                <option value="">
+                    기수를 선택해주세요
+                </option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+            </select>
+        </div>
+
+
+        <!-- 번호 -->
+        <div class="form-row">
+            <label for="number">번호</label>
+            <input
+                type="number"
+                id="number"
+                placeholder="번호를 입력하세요."
+                min="1"
+            />
+        </div>
+
+
+        <!-- 비밀번호 -->
+        <div class="form-row">
+            <label for="pw">PW</label>
+            <input
+                type="password"
+                id="pw"
+                placeholder="PW를 입력하세요."
+            />
+        </div>
+
+
+        <!-- 비밀번호 확인 -->
+        <div class="form-row">
+            <label for="pwcheck">PW 확인</label>
+            <input
+                type="password"
+                id="pwcheck"
+                placeholder="다시 한번 입력하세요."
+            />
+        </div>
+
+
+        <!-- 회원가입 -->
+        <div class="form-row">
+            <button
+                type="button"
+                id="signupbtn"
+            >
+                회원등록
+            </button>
+        </div>
+    </div>
+        
+    </div>
+    {% endblock %}
